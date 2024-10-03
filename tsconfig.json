@@ -40,8 +40,6 @@
     "paths": {
       "@/*": ["src/*"],
       "~/*": ["src/*"]
-    },
-
-    "types": ["@types/express", "@types/jest", "@types/node", "@types/supertest"]
+    }
   }
 }
