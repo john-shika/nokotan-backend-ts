@@ -1,22 +1,47 @@
 {
   "compilerOptions": {
-    "module": "commonjs",
-    "declaration": true,
-    "removeComments": true,
-    "emitDecoratorMetadata": true,
-    "experimentalDecorators": true,
-    "allowSyntheticDefaultImports": true,
-    "target": "ES2021",
-    "sourceMap": true,
+    "target": "ES2022",
+    "lib": ["ESNext"],
+    "module": "NodeNext",
+    "moduleDetection": "force",
+    "moduleResolution": "NodeNext",
     "outDir": "./dist",
-    "baseUrl": "./",
-    "incremental": true,
-    "skipLibCheck": true,
-    "strictNullChecks": false,
-    "noImplicitAny": false,
-    "strictBindCallApply": false,
+
+    "allowImportingTsExtensions": false,
+    "allowJs": true,
+
+    "allowSyntheticDefaultImports": true,
+    "declaration": true,
+    "emitDecoratorMetadata": true,
+    "esModuleInterop": false,
+
+    "experimentalDecorators": true,
     "forceConsistentCasingInFileNames": true,
+    "incremental": true,
+    "isolatedModules": true,
+
+    "jsx": "preserve",
+    "noEmit": false,
     "noFallthroughCasesInSwitch": false,
-    "strict": true
+    "noImplicitAny": false,
+
+    "removeComments": true,
+    "resolveJsonModule": true,
+    "skipLibCheck": true,
+    "sourceMap": true,
+
+    "strictBindCallApply": false,
+    "strictNullChecks": false,
+    "useDefineForClassFields": true,
+    "verbatimModuleSyntax": false,
+
+    "baseUrl": "./",
+    "strict": true,
+    "paths": {
+      "@/*": ["src/*"],
+      "~/*": ["src/*"]
+    },
+
+    "types": ["@types/express", "@types/jest", "@types/node", "@types/supertest"]
   }
 }
