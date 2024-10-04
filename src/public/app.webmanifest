@@ -1,6 +1,8 @@
 {
   "name": "Nokotan Backend",
   "short_name": "Nokotan",
+  "start_url": "/index.html",
+  "orientation": "landscape",
   "icons": [
     {
       "src": "/android-chrome-192x192.png",
