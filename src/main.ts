@@ -6,14 +6,13 @@ import { ExpressAdapter, NestExpressApplication } from '@nestjs/platform-express
 import { AppModule } from '@/modules/app.module';
 import { HttpExceptionFilter } from '@/exceptions/http-exception.filter';
 import { jwtConstants } from './globals/constants';
-import { Logger } from '@nestjs/common';
-import { getName } from './utils/common';
+import { createLogger } from './utils/common';
 
 async function bootstrap() {
   globalsInit();
 
   const app = await NestFactory.create<NestExpressApplication>(AppModule, new ExpressAdapter());
-  const logger = new Logger(getName(app));
+  const logger = createLogger('Nokotan');
 
   openApiInit(app);
 
@@ -21,7 +20,8 @@ async function bootstrap() {
 
   app.enableCors();
 
-  app.useStaticAssets(path.join(__dirname, '..', 'public'), {
+  const assetsPath = path.join(__dirname, '..', 'public');
+  app.useStaticAssets(assetsPath, {
     prefix: '/',
   });
 
