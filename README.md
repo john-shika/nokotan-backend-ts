@@ -42,3 +42,9 @@ pnpm run test:cov
 pnpm install -g npm-check-updates
 npx ncu -u
 ```
+
+## Prisma New Migration
+
+```shell
+npx prisma migrate dev --name init
+```

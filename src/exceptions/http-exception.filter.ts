@@ -15,9 +15,7 @@ export class HttpExceptionFilter implements ExceptionFilter {
     const message = error ? `Error ${error} At ${request.url}` : `Error At ${request.url}`;
     const messageBody = new MessageBody(status, message);
 
-    response
-      .status(status)
-      .json(messageBody);
+    response.status(status).json(messageBody);
   }
 }
 

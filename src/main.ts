@@ -1,36 +1,25 @@
 import * as path from 'path';
-import * as dotenv from 'dotenv';
+import globalsInit from '@/globals/setup';
+import openApiInit from '@/openapi/setup';
 import { NestFactory } from '@nestjs/core';
 import { ExpressAdapter, NestExpressApplication } from '@nestjs/platform-express';
 import { AppModule } from '@/modules/app.module';
-import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
-import { HttpExceptionFilter } from './exceptions/http-exception.filter';
+import { HttpExceptionFilter } from '@/exceptions/http-exception.filter';
 import { jwtConstants } from './globals/constants';
+import { Logger } from '@nestjs/common';
+import { getName } from './utils/common';
 
 async function bootstrap() {
-
-  dotenv.config({
-    path: path.join(__dirname, '..', '.env'),
-  });
-
-  Object.defineProperty(jwtConstants, 'secretKey', {
-    value: process.env.JWT_SECRET_KEY,
-    enumerable: true,
-    configurable: false,
-    writable: false,
-  })
-
-  console.log(jwtConstants.secretKey);
+  globalsInit();
 
   const app = await NestFactory.create<NestExpressApplication>(AppModule, new ExpressAdapter());
-  const config = new DocumentBuilder()
-  .setTitle('Nokotan Api')
-  .setDescription('A Nokotan Backend Api Documentation')
-  .setVersion('1.0')
-  .build();
+  const logger = new Logger(getName(app));
 
-  const swagDoc = SwaggerModule.createDocument(app, config);
-  SwaggerModule.setup('api', app, swagDoc);
+  openApiInit(app);
+
+  logger.debug(`jwtConstants.secretKey = ${jwtConstants.secretKey}`);
+
+  app.enableCors();
 
   app.useStaticAssets(path.join(__dirname, '..', 'public'), {
     prefix: '/',

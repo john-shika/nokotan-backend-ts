@@ -145,10 +145,6 @@ dist
 # vuepress build output
 .vuepress/dist
 
-# vuepress v2.x temp and cache directory
-.temp
-.cache
-
 # Docusaurus cache and generated files
 .docusaurus
 
@@ -177,3 +173,7 @@ dist
 bun.lockb
 pnpm-lock.yaml
 package-lock.json
+
+prisma/migrations/
+prisma/dev.db-jounal
+prisma/dev.db

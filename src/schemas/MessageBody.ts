@@ -1,11 +1,11 @@
-import HttpStatusCodes, { HttpMessageBody, HttpStatusText, setStatusMessage } from "@/utils/net/http.status_codes";
-import { ApiProperty } from "@nestjs/swagger";
+import { getDateISOString } from '@/utils/common';
+import HttpStatusCodes, { HttpMessageBody, HttpStatusText, setStatusMessage } from '@/utils/net/http';
+import { ApiProperty } from '@nestjs/swagger';
 
-export class MessageBody implements HttpMessageBody {
-
+export class MessageBody<T extends any> implements HttpMessageBody<T> {
   constructor(code: HttpStatusCodes, message: string) {
     setStatusMessage(this, code);
-    this.timestamp = new Date().toISOString();
+    this.timestamp = getDateISOString();
     this.message = message;
   }
 
@@ -13,24 +13,24 @@ export class MessageBody implements HttpMessageBody {
     this.data = data;
     return this;
   }
-  
+
   @ApiProperty()
   status: HttpStatusText;
-  
+
   @ApiProperty()
   statusOk: boolean;
-  
+
   @ApiProperty()
   statusCode: HttpStatusCodes;
-  
+
   @ApiProperty()
   timestamp: string;
-  
+
   @ApiProperty()
   message: string;
-  
+
   @ApiProperty()
-  data?: any;
+  data?: T;
 }
 
 export default MessageBody;

@@ -1,3 +1,5 @@
+import { getEnv } from '@/utils/common';
+
 export const jwtConstants = {
-  secretKey: process.env.JWT_SECRET_KEY ?? '',
+  secretKey: getEnv('JWT_SECRET_KEY'),
 };

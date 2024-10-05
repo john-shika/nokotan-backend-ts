@@ -1,69 +1,131 @@
 import {
   CanActivate,
+  ClassProvider,
   ExecutionContext,
   Injectable,
+  InternalServerErrorException,
+  Logger,
   UnauthorizedException,
 } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { jwtConstants } from '@/globals/constants';
-import { Request } from 'express';
-import { Reflector } from '@nestjs/core';
-import { IS_PUBLIC_KEY } from '@/decorators/public.decorator';
-
-export interface UserJwtToken {
-  sub?: number 
-  username: string
-  iat?: number 
-  exp?: number
-}
+import { APP_GUARD, Reflector } from '@nestjs/core';
+import { IS_AUTHORIZE_KEY } from '@/decorators/authorize.decorator';
+import { IClaimsJwtToken } from '@/schemas/JwtToken';
+import {
+  createLogger,
+  provideService as createProviderService,
+  defineProperty,
+  extractTokenFromHeader,
+  getName,
+  isActivated,
+  Logging,
+} from '@/utils/common';
+import type { Request } from 'express';
+import { SessionsService } from './sessions.service';
 
 @Injectable()
 export class AuthGuard implements CanActivate {
+  public readonly logger: Logger;
+
+  private readonly sessionsService: SessionsService;
   private readonly jwtService: JwtService;
   private readonly reflector: Reflector;
-  
-  constructor(jwtService: JwtService, reflector: Reflector) {
+
+  constructor(sessionsService: SessionsService, jwtService: JwtService, reflector: Reflector) {
+    this.logger = createLogger(this);
+
+    this.sessionsService = sessionsService;
     this.jwtService = jwtService;
     this.reflector = reflector;
   }
 
-  async canActivate(context: ExecutionContext): Promise<boolean> {
-    const isPublic = this.reflector.getAllAndOverride<boolean>(IS_PUBLIC_KEY, [
-      context.getHandler(),
-      context.getClass(),
-    ]);
+  static provider(): ClassProvider<any> {
+    return createProviderService(APP_GUARD, AuthGuard);
+  }
 
-    if (isPublic) {
-      // 💡 See this condition
+  async canActivate(context: ExecutionContext): Promise<boolean> {
+    isActivated(this);
+
+    const isAuthorize = this.reflector.getAllAndOverride<boolean>(IS_AUTHORIZE_KEY, [context.getHandler(), context.getClass()]);
+    this.logger.debug(`IsAuthorize = ${isAuthorize ? 'yes' : 'no'}`);
+
+    if (!isAuthorize) {
       return true;
     }
 
-    const request = context.switchToHttp().getRequest();
-    const token = this.extractTokenFromHeader(request);
+    const request = context.switchToHttp().getRequest() as Request;
+    const token = extractTokenFromHeader(request);
 
     if (!token) {
       throw new UnauthorizedException();
     }
 
     try {
-      const payload = await this.jwtService.verifyAsync(token, {
-        secret: jwtConstants.secretKey,
-      }) as UserJwtToken;
+      const options = { secret: jwtConstants.secretKey };
+      const payload = (await this.jwtService.verifyAsync(token, options)) as IClaimsJwtToken;
 
-      // 💡 We're assigning the payload to the request object here
-      // so that we can access it in our route handlers
-      request['user'] = payload;
+      const sessionUUID = payload?.sub.trim() ?? '';
+      const username = payload?.username.trim() ?? '';
 
-    } catch (e: any) {
-      console.log(e);
+      (() => {
+        if (!sessionUUID) {
+          throw new UnauthorizedException();
+        }
+      })();
+
+      const session = await this.sessionsService.sessionUserPreload({
+        uuid: sessionUUID,
+        deleted_at: null,
+      });
+
+      const user = session?.user;
+
+      (() => {
+        if (!session || user?.username !== username) {
+          throw new UnauthorizedException();
+        }
+      })();
+
+      let newToken = session.new_token;
+
+      (() => {
+        if (session.token !== token && newToken !== token) {
+          throw new UnauthorizedException();
+        }
+      })();
+
+      // remove new token from session
+      if (newToken === token) newToken = '..';
+
+      await (async () => {
+        const updatedAt = new Date();
+
+        // update session
+        const session = await this.sessionsService.updateSession({
+          where: {
+            uuid: sessionUUID,
+            deleted_at: null,
+          },
+          data: {
+            token: token, // replace new token if exists
+            new_token: newToken, // can be replaced by new token with refresh mode
+            updated_at: updatedAt, // auto update for check online
+          },
+        });
+
+        if (!session) {
+          throw new InternalServerErrorException();
+        }
+
+        defineProperty(request, 'user', user);
+        defineProperty(request, 'session', session);
+      })();
+    } catch (e) {
+      this.logger.error(`Error: ${e}`);
       throw new UnauthorizedException();
     }
 
     return true;
-  }
-
-  private extractTokenFromHeader(request: Request): string | undefined {
-    const [type, token] = request.headers.authorization?.split(' ') ?? [];
-    return type === 'Bearer' ? token : undefined;
   }
 }
