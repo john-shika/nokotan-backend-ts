@@ -8,7 +8,7 @@ const logger = new Logger('Database\\Dummy');
 async function createUser(data) {
   logger.log(`Checking '${data.username}' user...`);
 
-  const check = await prisma.user.findFirst({
+  const check = await prisma.users.findFirst({
     where: {
       username: data.username,
     },
@@ -17,7 +17,7 @@ async function createUser(data) {
   if (!check) {
     logger.log(`Creating '${data.username}' user...`);
 
-    const user = await prisma.user.create({
+    const user = await prisma.users.create({
       data,
     });
 
@@ -34,6 +34,7 @@ async function main() {
     uuid: uuid.v7(),
     username: 'admin',
     password: 'Admin@1234',
+    email: 'admin@example.com',
     admin: true,
     created_at: new Date(),
     updated_at: new Date(),
@@ -43,6 +44,7 @@ async function main() {
     uuid: uuid.v7(),
     username: 'user',
     password: 'User@1234',
+    email: 'user@example.com',
     admin: false,
     created_at: new Date(),
     updated_at: new Date(),

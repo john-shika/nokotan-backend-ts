@@ -19,7 +19,6 @@ export class AppController {
   @HttpCode(HttpStatusCodes.OK)
   @Header('Content-Type', 'application/json')
   @ApiResponse({
-    status: HttpStatusCodes.OK,
     description: 'Get hello message',
     type: MessageBody,
   })

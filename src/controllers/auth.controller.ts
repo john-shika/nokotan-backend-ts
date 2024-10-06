@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Header, HttpCode, HttpStatus, InternalServerErrorException, Post, Req } from '@nestjs/common';
+import { Body, Controller, Get, Header, HttpCode, InternalServerErrorException, Post, Req } from '@nestjs/common';
 import { AuthService } from '@/services/auth.service';
 import { UsersService } from '@/services/users.service';
 import { Authorize } from '@/decorators/authorize.decorator';
@@ -9,9 +9,9 @@ import MessageBody from '@/schemas/MessageBody';
 import { User } from '@/models/User';
 import { Session, Sessions } from '@/models/Session';
 import type { Request } from 'express';
-import type { ISignInBodyForm } from '@/schemas/SignInBodyForm';
-import { IUserProfileLookupManyMessageBody, IUserProfileLookupDataMany, UserProfileLookupData } from '@/schemas/UserProfileLookup';
-import { sessionIsOnline } from '@/utils/common';
+import type { ILoginBodyForm } from '@/schemas/LoginBodyForm';
+import { IUserProfileLookupManyMessageBody, IUserProfileLookupDataMany } from '@/schemas/UserProfileLookup';
+import { getUserProfileLookupDataFromSession } from '@/utils/session';
 
 @Controller('auth')
 export class AuthController {
@@ -27,12 +27,11 @@ export class AuthController {
   @HttpCode(HttpStatusCodes.CREATED)
   @Header('Content-Type', 'application/json')
   @ApiResponse({
-    status: HttpStatusCodes.CREATED,
     description: 'Login Account',
     type: MessageBody<IAccessJwtTokenData>,
   })
-  async signIn(@Req() req: Request, @Body() body: ISignInBodyForm): Promise<IAccessJwtTokenMessageBody> {
-    return this.authService.signIn(req, body.username, body.password);
+  async signIn(@Req() req: Request, @Body() body: ILoginBodyForm): Promise<IAccessJwtTokenMessageBody> {
+    return this.authService.authLogin(req, body);
   }
 
   @Authorize()
@@ -40,7 +39,6 @@ export class AuthController {
   @HttpCode(HttpStatusCodes.OK)
   @Header('Content-Type', 'application/json')
   @ApiResponse({
-    status: HttpStatusCodes.OK,
     description: 'User Profile Lookup',
     type: MessageBody<IAccessJwtTokenData>,
   })
@@ -64,18 +62,10 @@ export class AuthController {
     })(user.id);
 
     // max tolerance 12 seconds for check online for session
-    const tolerance = 12;
+    const timeThresholdForOnlineCheck = 12;
 
-    for (let temp of sessions) {
-      const uuid = temp.uuid;
-      const used = temp.id == session.id;
-      const online = sessionIsOnline(temp, tolerance);
-      const ip_addr = temp.ip_addr;
-      const user_agent = temp.user_agent;
-      const created_at = temp.created_at.toISOString();
-      const updated_at = temp.updated_at.toISOString();
-      const deleted_at = temp.deleted_at?.toISOString(); // auto hidden with undefined
-      const userProfileLookupData = new UserProfileLookupData(uuid, used, online, ip_addr, user_agent, created_at, updated_at, deleted_at);
+    for (const temp of sessions) {
+      const userProfileLookupData = getUserProfileLookupDataFromSession(temp, session.id, timeThresholdForOnlineCheck);
 
       userProfileLookupDataMany.push(userProfileLookupData);
     }

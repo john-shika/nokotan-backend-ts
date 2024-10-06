@@ -48,7 +48,6 @@ export class AuthGuard implements CanActivate {
     isActivated(this);
 
     const isAuthorize = this.reflector.getAllAndOverride<boolean>(IS_AUTHORIZE_KEY, [context.getHandler(), context.getClass()]);
-    this.logger.debug(`IsAuthorize = ${isAuthorize ? 'yes' : 'no'}`);
 
     if (!isAuthorize) {
       return true;

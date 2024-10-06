@@ -1,5 +1,5 @@
 import MessageBody from '@/schemas/MessageBody';
-import { ExceptionFilter, Catch, ArgumentsHost, HttpException, HttpExceptionBodyMessage, HttpExceptionBody } from '@nestjs/common';
+import { ExceptionFilter, Catch, ArgumentsHost, HttpException, HttpExceptionBody } from '@nestjs/common';
 import { Request, Response } from 'express';
 
 @Catch(HttpException)

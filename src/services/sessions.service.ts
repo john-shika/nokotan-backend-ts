@@ -14,7 +14,7 @@ export class SessionsService {
 
   async findOneById(id: number): Promise<Nullable<Session>> {
     return (
-      (await this.prisma.session.findFirst({
+      (await this.prisma.sessions.findFirst({
         where: {
           id,
           deleted_at: null,
@@ -25,7 +25,7 @@ export class SessionsService {
 
   async findOneByUserId(userId: number): Promise<Nullable<Session>> {
     return (
-      (await this.prisma.session.findFirst({
+      (await this.prisma.sessions.findFirst({
         where: {
           user_id: userId,
           deleted_at: null,
@@ -36,7 +36,7 @@ export class SessionsService {
 
   async findOneByUserName(username: string): Promise<Nullable<Session>> {
     return (
-      (await this.prisma.session.findFirst({
+      (await this.prisma.sessions.findFirst({
         where: {
           user: {
             username,
@@ -48,7 +48,7 @@ export class SessionsService {
   }
 
   async removeById(id: number): Promise<Nullable<Session>> {
-    return this.prisma.session.update({
+    return this.prisma.sessions.update({
       where: {
         id,
         deleted_at: null,
@@ -60,7 +60,7 @@ export class SessionsService {
   }
 
   async removeByUserId(userId: number): Promise<Nullable<Prisma.BatchPayload>> {
-    return this.prisma.session.updateMany({
+    return this.prisma.sessions.updateMany({
       where: {
         user_id: userId,
         deleted_at: null,
@@ -72,7 +72,7 @@ export class SessionsService {
   }
 
   async removeByUserName(username: string): Promise<Nullable<Prisma.BatchPayload>> {
-    return this.prisma.session.updateMany({
+    return this.prisma.sessions.updateMany({
       where: {
         user: {
           username,
@@ -87,14 +87,14 @@ export class SessionsService {
 
   // low profile without checking column `deleted_at` at first time
 
-  async session(userWhereUniqueInput: Prisma.SessionWhereUniqueInput): Promise<Nullable<Session>> {
-    return this.prisma.session.findUnique({
+  async session(userWhereUniqueInput: Prisma.sessionsWhereUniqueInput): Promise<Nullable<Session>> {
+    return this.prisma.sessions.findUnique({
       where: userWhereUniqueInput,
     });
   }
 
-  async sessionUserPreload(userWhereUniqueInput: Prisma.SessionWhereUniqueInput): Promise<Nullable<Session>> {
-    return this.prisma.session.findUnique({
+  async sessionUserPreload(userWhereUniqueInput: Prisma.sessionsWhereUniqueInput): Promise<Nullable<Session>> {
+    return this.prisma.sessions.findUnique({
       where: userWhereUniqueInput,
       include: {
         user: true,
@@ -105,12 +105,12 @@ export class SessionsService {
   async sessions(params: {
     skip?: number;
     take?: number;
-    cursor?: Prisma.SessionWhereUniqueInput;
-    where?: Prisma.SessionWhereInput;
-    orderBy?: Prisma.SessionOrderByWithRelationInput;
+    cursor?: Prisma.sessionsWhereUniqueInput;
+    where?: Prisma.sessionsWhereInput;
+    orderBy?: Prisma.sessionsOrderByWithRelationInput;
   }): Promise<Sessions> {
     const { skip, take, cursor, where, orderBy } = params;
-    return this.prisma.session.findMany({
+    return this.prisma.sessions.findMany({
       skip,
       take,
       cursor,
@@ -119,22 +119,22 @@ export class SessionsService {
     });
   }
 
-  async createSession(data: Prisma.SessionCreateInput): Promise<Session> {
-    return this.prisma.session.create({
+  async createSession(data: Prisma.sessionsCreateInput): Promise<Session> {
+    return this.prisma.sessions.create({
       data,
     });
   }
 
-  async updateSession(params: { where: Prisma.SessionWhereUniqueInput; data: Prisma.SessionUpdateInput }): Promise<Session> {
+  async updateSession(params: { where: Prisma.sessionsWhereUniqueInput; data: Prisma.sessionsUpdateInput }): Promise<Session> {
     const { where, data } = params;
-    return this.prisma.session.update({
+    return this.prisma.sessions.update({
       data,
       where,
     });
   }
 
-  async deleteSession(where: Prisma.SessionWhereUniqueInput): Promise<Session> {
-    return this.prisma.session.delete({
+  async deleteSession(where: Prisma.sessionsWhereUniqueInput): Promise<Session> {
+    return this.prisma.sessions.delete({
       where,
     });
   }

@@ -18,10 +18,10 @@ export class MessageBody<T extends any> implements HttpMessageBody<T> {
   status: HttpStatusText;
 
   @ApiProperty()
-  statusOk: boolean;
+  status_ok: boolean;
 
   @ApiProperty()
-  statusCode: HttpStatusCodes;
+  status_code: HttpStatusCodes;
 
   @ApiProperty()
   timestamp: string;

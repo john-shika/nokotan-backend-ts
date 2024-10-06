@@ -1,7 +1,7 @@
 import * as path from 'path';
 import * as dotenv from 'dotenv';
-import { jwtConstants } from '@/globals/constants';
-import { definePropertyReadOnly, getEnv } from '@/utils/common';
+import { debugConstants, jwtConstants } from '@/globals/constants';
+import { definePropertyReadOnly, getEnv, getEnvBool } from '@/utils/common';
 
 export function init() {
   dotenv.config({
@@ -9,6 +9,7 @@ export function init() {
   });
 
   definePropertyReadOnly(jwtConstants, 'secretKey', getEnv('JWT_SECRET_KEY'));
+  definePropertyReadOnly(debugConstants, 'testing', getEnvBool('IS_TESTING'));
 }
 
 export default init;

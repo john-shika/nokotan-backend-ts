@@ -1,6 +1,6 @@
-import Model_$obj, { Model } from '@/models/Model';
+import BaseModel, { Model } from '@/models/Model';
 import { Nullable } from '@/utils/common';
-import { User } from '@prisma/client';
+import { users } from '@prisma/client';
 
 export interface Session extends Model {
   user_id: number;
@@ -9,14 +9,14 @@ export interface Session extends Model {
   ip_addr: string;
   user_agent: string;
   expired_at: Nullable<Date>;
-  user?: User; // preload using @prisma/client
+  user?: users; // preload using @prisma/client
 }
 
 export type Sessions = Session[];
 
 export const $name: string = 'sessions';
 
-export class $model extends Model_$obj.$model implements Session {
+export class $model extends BaseModel.$model implements Session {
   public readonly name: string = $name;
 
   public readonly user_id: number;

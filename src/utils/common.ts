@@ -61,7 +61,21 @@ export function defineProperty(obj: object, name: string, value: any) {
 }
 
 export function getEnv(name: string): string {
-  return process.env?.[name] ?? '';
+  const val = process.env?.[name] ?? '';
+  return val.trim();
+}
+
+export function getEnvBool(name: string): boolean {
+  const val = getEnv(name).toLowerCase();
+  switch (val) {
+    case 'true':
+    case 'yes':
+    case 'y':
+    case '1':
+      return true;
+    default:
+      return false;
+  }
 }
 
 export function getTimeUTCNow(): number {
@@ -155,8 +169,12 @@ export class DateTime extends Date {
   }
 }
 
-export function sessionIsOnline(session: Session, tolerance?: number): boolean {
+export function sessionIsOnline(session: Session, timeThresholdForOnlineCheck?: number): boolean {
   const currentTime = DateTime.UTCNow();
-  const expiredAt = DateTime.addSeconds(session.updated_at, tolerance ?? 12);
+  const expiredAt = DateTime.addSeconds(session.updated_at, timeThresholdForOnlineCheck ?? 12);
   return session.deleted_at == null && DateTime.isAfter(expiredAt, currentTime);
+}
+
+export function getAttrToString(obj: object, name: string): string {
+  return typeof obj?.[name] === 'string' ? (obj[name] as string).trim() : '';
 }

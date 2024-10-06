@@ -8,8 +8,8 @@ import MessageBody from '@/schemas/MessageBody';
 import { AccessJwtTokenData, IAccessJwtTokenMessageBody, IClaimsJwtToken } from '@/schemas/JwtToken';
 import { SessionsService } from './sessions.service';
 import { getIPAddress, getJwtTokenCreatedAt, getJwtTokenExpiredAt, getUserAgent } from '@/utils/common';
+import type { ILoginBodyForm } from '@/schemas/LoginBodyForm';
 import type { Request } from 'express';
-import { createSession } from '@/models/Session';
 
 @Injectable()
 export class AuthService {
@@ -23,11 +23,11 @@ export class AuthService {
     this.jwtService = jwtService;
   }
 
-  async signIn(@Req() req: Request, username: string, password: string): Promise<IAccessJwtTokenMessageBody> {
+  async authLogin(@Req() req: Request, body: ILoginBodyForm): Promise<IAccessJwtTokenMessageBody> {
     const ip_addr = getIPAddress(req);
     const user_agent = getUserAgent(req);
 
-    const user = await this.usersService.authUserPass(username, password);
+    const user = await this.usersService.authLogin(body);
 
     if (!user) {
       throw new UnauthorizedException();
