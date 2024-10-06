@@ -8,36 +8,37 @@ export class ApiService {
     return `
       <!doctype html>
       <html lang="en">
-          <head>
-              <title>${options.title}</title>
-              <meta charset="utf-8" />
-              <meta name="viewport" content="width=device-width, initial-scale=1" />
-          </head>
-          <body>
-              <script id="api-reference" data-url="${path}"></script>
-              <script>
-                  function main() {
-                    const reference = document.getElementById('api-reference');
-                    if (typeof reference?.['dataset'] === 'object') {
-                      reference.dataset.configuration = atob('${data}');
-                    }
-                  }
-                  
-                  let called = false;
-                  function preload() {
-                    if (!called && document.readyState === 'complete') {
-                      called = true;
-                      main();
-                    }
-                  }
-                  
-                  window.addEventListener('load', preload);
-                  document.addEventListener('load', preload);
-                  document.addEventListener('DOMContentLoaded', preload);
-              </script>
-              <script src="/js/scalar.api-reference.js"></script>
-          </body>
+        <head>
+          <meta charset="utf-8" />
+          <meta name="viewport" content="width=device-width, initial-scale=1" />
+          <title>${options.title}</title>
+          <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+        </head>
+        <body>
+          <script id="api-reference" data-url="${path}"></script>
+          <script>
+            function main() {
+              const reference = document.getElementById('api-reference');
+              if (typeof reference?.['dataset'] === 'object') {
+                reference.dataset.configuration = atob('${data}');
+              }
+            }
+            
+            let called = false;
+            function preload() {
+              if (!called && document.readyState === 'complete') {
+                called = true;
+                main();
+              }
+            }
+            
+            window.addEventListener('load', preload);
+            document.addEventListener('load', preload);
+            document.addEventListener('DOMContentLoaded', preload);
+          </script>
+          <script src="/js/scalar.api-reference.js"></script>
+        </body>
       </html>
-    `;
+      `;
   }
 }
