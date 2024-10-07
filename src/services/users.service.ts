@@ -1,7 +1,7 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { PrismaService } from './prisma.service';
 import { Prisma } from '@prisma/client';
-import { createLogger, getAttrToString, getDateISOString, Nullable } from '@/utils/common';
+import { createLogger, getAttrToString, getDateISOString, getDateToday, Nullable } from '@/utils/common';
 import { User, Users } from '@/models/User';
 import { ILoginBodyForm } from '@/schemas/LoginBodyForm';
 
@@ -141,10 +141,19 @@ export class UsersService {
   }
 
   async userSessionsPreload(userWhereUniqueInput: Prisma.usersWhereUniqueInput): Promise<Nullable<User>> {
+    const today = getDateToday();
     return this.prisma.users.findUnique({
       where: userWhereUniqueInput,
       include: {
-        sessions: true,
+        sessions: {
+          where: {
+            updated_at: {
+              gte: today,
+            },
+            deleted_at: null,
+          },
+          orderBy: { created_at: 'desc' },
+        },
       },
     });
   }

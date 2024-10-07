@@ -195,9 +195,3 @@ export function isNoneOrWhiteSpace(value?: string): boolean {
 export function IsNoneOrEmptyOrWhiteSpace(value?: string): boolean {
   return isNoneOrEmpty(value) || isNoneOrWhiteSpace(value);
 }
-
-export function getDateToday(): Date {
-  const currentTime = new Date();
-  currentTime.setHours(0, 0, 0, 0)
-  return currentTime;
-}

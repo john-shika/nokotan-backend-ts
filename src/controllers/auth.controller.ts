@@ -16,11 +16,11 @@ import { Session, Sessions } from '@/models/Session';
 import type { Request } from 'express';
 import type { ILoginBodyForm } from '@/schemas/LoginBodyForm';
 import {
-  IUserProfileLookupManyMessageBody,
-  IUserProfileLookupDataMany,
-  UserProfileLookupManyMessageBodySerialize,
-} from '@/schemas/UserProfileLookup';
-import { getUserProfileLookupDataFromSession } from '@/utils/session';
+  IUserSessionLookupManyMessageBody,
+  IUserSessionLookupDataMany,
+  UserSessionLookupManyMessageBodySerialize,
+} from '@/schemas/UserSessionLookup';
+import { getUserSessionLookup } from '@/utils/session';
 import { Serialize } from '@/decorators/serialize.decorator';
 import { createLogger } from '@/utils/common';
 
@@ -53,16 +53,16 @@ export class AuthController {
   @HttpCode(HttpStatusCodes.OK)
   @Header('Content-Type', 'application/json')
   @ApiResponse({
-    description: 'User Profile Lookup',
-    type: UserProfileLookupManyMessageBodySerialize,
+    description: 'User Session Lookup Many',
+    type: UserSessionLookupManyMessageBodySerialize,
   })
-  @Serialize(UserProfileLookupManyMessageBodySerialize)
-  async getProfile(@Req() req: Request): Promise<IUserProfileLookupManyMessageBody> {
+  @Serialize(UserSessionLookupManyMessageBodySerialize)
+  async getUserSessions(@Req() req: Request): Promise<IUserSessionLookupManyMessageBody> {
     const user = req?.['user'] as User;
     const session = req?.['session'] as Session;
 
-    const messageBody = new MessageBody<IUserProfileLookupDataMany>(HttpStatusCodes.OK, 'User Profile Lookup');
-    const userProfileLookupDataMany = [] as IUserProfileLookupDataMany;
+    const messageBody = new MessageBody<IUserSessionLookupDataMany>(HttpStatusCodes.OK, 'User Profile Lookup');
+    const userSessionDataMany = [] as IUserSessionLookupDataMany;
 
     const sessions = await (async (userId: number): Promise<Sessions> => {
       const user = await this.usersService.userSessionsPreload({
@@ -80,11 +80,11 @@ export class AuthController {
     const timeThresholdForOnlineCheck = 12;
 
     for (const temp of sessions) {
-      const userProfileLookupData = getUserProfileLookupDataFromSession(temp, session.id, timeThresholdForOnlineCheck);
+      const userSessionLookupData = getUserSessionLookup(temp, session.id, timeThresholdForOnlineCheck);
 
-      userProfileLookupDataMany.push(userProfileLookupData);
+      userSessionDataMany.push(userSessionLookupData);
     }
 
-    return messageBody.setData(userProfileLookupDataMany) as IUserProfileLookupManyMessageBody;
+    return messageBody.setData(userSessionDataMany) as IUserSessionLookupManyMessageBody;
   }
 }
