@@ -86,13 +86,13 @@ export class UserProfileLookupDataSerialize {
   public readonly deletedAt?: string;
 }
 
-export class UserProfileLookupMessageBodySerialize extends MessageBodySerialize<UserProfileLookupDataSerialize> {
+export class UserProfileLookupManyMessageBodySerialize extends MessageBodySerialize<UserProfileLookupDataSerialize[]> {
 
-  @ApiProperty()
+  @ApiProperty({ type: [UserProfileLookupDataSerialize] })
   @Expose({ name: 'data' })
   @Type(() => UserProfileLookupDataSerialize)
-  @ValidateNested()
-  declare data: UserProfileLookupDataSerialize;
+  @ValidateNested({ each: true })
+  declare data: UserProfileLookupDataSerialize[];
 }
 
 export default UserProfileLookupData;

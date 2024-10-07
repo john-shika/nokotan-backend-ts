@@ -28,7 +28,7 @@ import type { ILoginBodyForm } from '@/schemas/LoginBodyForm';
 import {
   IUserProfileLookupManyMessageBody,
   IUserProfileLookupDataMany,
-  UserProfileLookupMessageBodySerialize,
+  UserProfileLookupManyMessageBodySerialize,
 } from '@/schemas/UserProfileLookup';
 import { getUserProfileLookupDataFromSession } from '@/utils/session';
 import { Serialize } from '@/decorators/serialize.decorator';
@@ -64,9 +64,9 @@ export class AuthController {
   @Header('Content-Type', 'application/json')
   @ApiResponse({
     description: 'User Profile Lookup',
-    type: UserProfileLookupMessageBodySerialize,
+    type: UserProfileLookupManyMessageBodySerialize,
   })
-  @Serialize(UserProfileLookupMessageBodySerialize)
+  @Serialize(UserProfileLookupManyMessageBodySerialize)
   async getProfile(@Req() req: Request): Promise<IUserProfileLookupManyMessageBody> {
     const user = req?.['user'] as User;
     const session = req?.['session'] as Session;

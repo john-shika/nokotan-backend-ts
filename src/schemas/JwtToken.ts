@@ -48,6 +48,7 @@ export class AccessJwtTokenDataSerialize {
 
 export class AccessJwtTokenMessageBodySerialize extends MessageBodySerialize<AccessJwtTokenDataSerialize> {
 
+  @ApiProperty({ type: AccessJwtTokenDataSerialize })
   @Expose({ name: 'data' })
   @Type(() => AccessJwtTokenDataSerialize)
   @ValidateNested()
