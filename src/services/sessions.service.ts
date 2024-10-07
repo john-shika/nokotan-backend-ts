@@ -1,11 +1,13 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, Logger } from '@nestjs/common';
 import { PrismaService } from './prisma.service';
 import { Prisma } from '@prisma/client';
-import { getDateISOString, Nullable } from '@/utils/common';
+import { createLogger, getDateISOString, Nullable } from '@/utils/common';
 import { Session, Sessions } from '@/models/Session';
 
 @Injectable()
 export class SessionsService {
+  public readonly logger: Logger = createLogger(this);
+
   private readonly prisma: PrismaService;
 
   constructor(prisma: PrismaService) {

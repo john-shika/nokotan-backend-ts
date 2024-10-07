@@ -1,12 +1,14 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, Logger } from '@nestjs/common';
 import { PrismaService } from './prisma.service';
 import { Prisma } from '@prisma/client';
-import { getAttrToString, getDateISOString, Nullable } from '@/utils/common';
+import { createLogger, getAttrToString, getDateISOString, Nullable } from '@/utils/common';
 import { User, Users } from '@/models/User';
 import { ILoginBodyForm } from '@/schemas/LoginBodyForm';
 
 @Injectable()
 export class UsersService {
+  public readonly logger: Logger = createLogger(this);
+
   private readonly prisma: PrismaService;
 
   constructor(prisma: PrismaService) {

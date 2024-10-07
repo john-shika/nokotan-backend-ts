@@ -20,7 +20,7 @@ export class ApiService {
             function main() {
               const reference = document.getElementById('api-reference');
               if (typeof reference?.['dataset'] === 'object') {
-                reference.dataset.configuration = atob('${data}');
+                reference['dataset'].configuration = atob('${data}');
               }
             }
             

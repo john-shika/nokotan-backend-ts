@@ -27,13 +27,11 @@ import { IS_TESTING_KEY } from '@/decorators/testing.decorator';
 
 @Injectable()
 export class TestingService implements CanActivate {
-  public readonly logger: Logger;
+  public readonly logger: Logger = createLogger(this);
 
   private readonly reflector: Reflector;
 
   constructor(reflector: Reflector) {
-    this.logger = createLogger(this);
-
     this.reflector = reflector;
   }
 

@@ -1,20 +1,43 @@
-import { Body, Controller, Get, Header, HttpCode, InternalServerErrorException, Post, Req } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Header,
+  HttpCode,
+  InternalServerErrorException,
+  Logger,
+  Post,
+  Req,
+} from '@nestjs/common';
 import { AuthService } from '@/services/auth.service';
 import { UsersService } from '@/services/users.service';
 import { Authorize } from '@/decorators/authorize.decorator';
-import { IAccessJwtTokenData, IAccessJwtTokenMessageBody } from '@/schemas/JwtToken';
+import {
+  AccessJwtTokenDataSerialize,
+  AccessJwtTokenMessageBodySerialize,
+  IAccessJwtTokenData,
+  IAccessJwtTokenMessageBody,
+} from '@/schemas/JwtToken';
 import { ApiResponse } from '@nestjs/swagger';
 import HttpStatusCodes from '@/utils/net/http';
-import MessageBody from '@/schemas/MessageBody';
+import MessageBody, { MessageBodySerialize } from '@/schemas/MessageBody';
 import { User } from '@/models/User';
 import { Session, Sessions } from '@/models/Session';
 import type { Request } from 'express';
 import type { ILoginBodyForm } from '@/schemas/LoginBodyForm';
-import { IUserProfileLookupManyMessageBody, IUserProfileLookupDataMany } from '@/schemas/UserProfileLookup';
+import {
+  IUserProfileLookupManyMessageBody,
+  IUserProfileLookupDataMany,
+  UserProfileLookupMessageBodySerialize,
+} from '@/schemas/UserProfileLookup';
 import { getUserProfileLookupDataFromSession } from '@/utils/session';
+import { Serialize } from '@/decorators/serialize.decorator';
+import { createLogger } from '@/utils/common';
 
 @Controller('auth')
 export class AuthController {
+  public readonly logger: Logger = createLogger(this);
+
   private readonly authService: AuthService;
   private readonly usersService: UsersService;
 
@@ -28,8 +51,9 @@ export class AuthController {
   @Header('Content-Type', 'application/json')
   @ApiResponse({
     description: 'Login Account',
-    type: MessageBody<IAccessJwtTokenData>,
+    type: AccessJwtTokenMessageBodySerialize,
   })
+  @Serialize(AccessJwtTokenMessageBodySerialize)
   async signIn(@Req() req: Request, @Body() body: ILoginBodyForm): Promise<IAccessJwtTokenMessageBody> {
     return this.authService.authLogin(req, body);
   }
@@ -40,8 +64,9 @@ export class AuthController {
   @Header('Content-Type', 'application/json')
   @ApiResponse({
     description: 'User Profile Lookup',
-    type: MessageBody<IAccessJwtTokenData>,
+    type: UserProfileLookupMessageBodySerialize,
   })
+  @Serialize(UserProfileLookupMessageBodySerialize)
   async getProfile(@Req() req: Request): Promise<IUserProfileLookupManyMessageBody> {
     const user = req?.['user'] as User;
     const session = req?.['session'] as Session;

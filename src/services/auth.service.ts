@@ -1,5 +1,5 @@
 import * as uuid from 'uuid';
-import { Injectable, InternalServerErrorException, Req, UnauthorizedException } from '@nestjs/common';
+import { Injectable, InternalServerErrorException, Logger, Req, UnauthorizedException } from '@nestjs/common';
 import { UsersService } from '@/services/users.service';
 import { JwtService } from '@nestjs/jwt';
 import { jwtConstants } from '@/globals/constants';
@@ -7,12 +7,14 @@ import HttpStatusCodes from '@/utils/net/http';
 import MessageBody from '@/schemas/MessageBody';
 import { AccessJwtTokenData, IAccessJwtTokenMessageBody, IClaimsJwtToken } from '@/schemas/JwtToken';
 import { SessionsService } from './sessions.service';
-import { getIPAddress, getJwtTokenCreatedAt, getJwtTokenExpiredAt, getUserAgent } from '@/utils/common';
+import { createLogger, getIPAddress, getJwtTokenCreatedAt, getJwtTokenExpiredAt, getUserAgent } from '@/utils/common';
 import type { ILoginBodyForm } from '@/schemas/LoginBodyForm';
 import type { Request } from 'express';
 
 @Injectable()
 export class AuthService {
+  public readonly logger: Logger = createLogger(this);
+
   private readonly usersService: UsersService;
   private readonly sessionsService: SessionsService;
   private readonly jwtService: JwtService;

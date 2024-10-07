@@ -26,15 +26,13 @@ import { SessionsService } from './sessions.service';
 
 @Injectable()
 export class AuthGuard implements CanActivate {
-  public readonly logger: Logger;
+  public readonly logger: Logger = createLogger(this);
 
   private readonly sessionsService: SessionsService;
   private readonly jwtService: JwtService;
   private readonly reflector: Reflector;
 
   constructor(sessionsService: SessionsService, jwtService: JwtService, reflector: Reflector) {
-    this.logger = createLogger(this);
-
     this.sessionsService = sessionsService;
     this.jwtService = jwtService;
     this.reflector = reflector;

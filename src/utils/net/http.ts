@@ -122,8 +122,8 @@ export enum HttpStatusText {
 
 export interface HttpMessageStatus {
   status: HttpStatusText;
-  status_code: HttpStatusCodes;
-  status_ok: boolean;
+  statusCode: HttpStatusCodes;
+  statusOk: boolean;
 }
 
 export interface HttpMessageBody<T extends any> extends HttpMessageStatus {
@@ -253,10 +253,10 @@ export function getHttpStatusText(code: HttpStatusCodes): HttpStatusText {
   }
 }
 
-export function setStatusMessage(messageStatus: HttpMessageStatus, code: HttpStatusCodes) {
-  messageStatus.status = getHttpStatusText(code);
-  messageStatus.status_code = code;
-  messageStatus.status_ok = 200 <= code && code < 300;
+export function setStatusMessage(messageBody: HttpMessageStatus, code: HttpStatusCodes) {
+  messageBody.status = getHttpStatusText(code);
+  messageBody.statusCode = code;
+  messageBody.statusOk = 200 <= code && code < 300;
 }
 
 export default HttpStatusCodes;

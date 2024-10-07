@@ -94,5 +94,3 @@ export class UserProfileLookupMessageBodySerialize extends MessageBodySerialize<
   @ValidateNested()
   declare data: UserProfileLookupDataSerialize;
 }
-
-export default UserProfileLookupData;
