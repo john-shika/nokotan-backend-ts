@@ -9,6 +9,7 @@ export interface IUserSessionLookupData {
   online: boolean;
   ip_addr: string;
   user_agent: string;
+  expired_at: string;
   created_at: string;
   updated_at: string;
   deleted_at?: string;
@@ -26,6 +27,7 @@ export class UserSessionLookupData implements IUserSessionLookupData {
   public readonly online: boolean;
   public readonly ip_addr: string;
   public readonly user_agent: string;
+  public readonly expired_at: string;
   public readonly created_at: string;
   public readonly updated_at: string;
   public readonly deleted_at?: string;
@@ -36,6 +38,7 @@ export class UserSessionLookupData implements IUserSessionLookupData {
     online: boolean,
     ip_addr: string,
     user_agent: string,
+    expired_at: string,
     created_at: string,
     updated_at: string,
     deleted_at?: string
@@ -45,6 +48,7 @@ export class UserSessionLookupData implements IUserSessionLookupData {
     this.online = online;
     this.ip_addr = ip_addr;
     this.user_agent = user_agent;
+    this.expired_at = expired_at;
     this.created_at = created_at;
     this.updated_at = updated_at;
     this.deleted_at = deleted_at;
@@ -71,6 +75,10 @@ export class UserSessionLookupDataSerialize {
   @ApiProperty()
   @Expose({ name: 'user_agent' })
   public readonly userAgent: string;
+
+  @ApiProperty()
+  @Expose({ name: 'expired_at' })
+  public readonly expiredAt: string;
 
   @ApiProperty()
   @Expose({ name: 'created_at' })

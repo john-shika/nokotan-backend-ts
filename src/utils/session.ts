@@ -12,8 +12,9 @@ export function getUserSessionLookup(
   const online = used || sessionIsOnline(session, timeThresholdForOnlineCheck);
   const ip_addr = session.ip_addr;
   const user_agent = session.user_agent;
+  const expired_at = session.expired_at.toISOString();
   const created_at = session.created_at.toISOString();
   const updated_at = session.updated_at.toISOString();
   const deleted_at = session.deleted_at?.toISOString(); // auto hidden with undefined
-  return new UserSessionLookupData(uuid, used, online, ip_addr, user_agent, created_at, updated_at, deleted_at);
+  return new UserSessionLookupData(uuid, used, online, ip_addr, user_agent, expired_at, created_at, updated_at, deleted_at);
 }
