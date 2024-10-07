@@ -1,13 +1,9 @@
 import { getDateISOString } from '@/utils/common';
-import HttpStatusCodes, {
-  getHttpStatusText,
-  HttpMessageBody,
-  HttpStatusText,
-} from '@/utils/net/http';
+import HttpStatusCodes, { getHttpStatusText, HttpMessageBody, HttpStatusText } from '@/utils/net/http';
 import { ApiProperty } from '@nestjs/swagger';
 import { Expose } from 'class-transformer';
 
-export interface IMessageBody<T extends any>{
+export interface IMessageBody<T extends any> {
   status: HttpStatusText;
   status_ok: boolean;
   status_code: HttpStatusCodes;
@@ -43,7 +39,6 @@ export class MessageBody<T extends any> implements IMessageBody<T> {
 }
 
 export class MessageBodySerialize<T extends any> implements HttpMessageBody<T> {
-
   @ApiProperty()
   @Expose({ name: 'status' })
   status: HttpStatusText;

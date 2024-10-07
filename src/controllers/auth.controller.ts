@@ -1,14 +1,4 @@
-import {
-  Body,
-  Controller,
-  Get,
-  Header,
-  HttpCode,
-  InternalServerErrorException,
-  Logger,
-  Post,
-  Req,
-} from '@nestjs/common';
+import { Body, Controller, Get, Header, HttpCode, InternalServerErrorException, Logger, Post, Req } from '@nestjs/common';
 import { AuthService } from '@/services/auth.service';
 import { UsersService } from '@/services/users.service';
 import { Authorize } from '@/decorators/authorize.decorator';

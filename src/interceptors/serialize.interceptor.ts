@@ -1,9 +1,4 @@
-import {
-  Injectable,
-  NestInterceptor,
-  ExecutionContext,
-  CallHandler, ClassProvider, Logger,
-} from '@nestjs/common';
+import { Injectable, NestInterceptor, ExecutionContext, CallHandler, ClassProvider, Logger } from '@nestjs/common';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { ClassConstructor, plainToInstance } from 'class-transformer';
@@ -28,7 +23,7 @@ export class SerializeInterceptor<T extends any> implements NestInterceptor<T, a
         });
 
         return temp;
-      }),
+      })
     );
   }
 }

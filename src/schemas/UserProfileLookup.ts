@@ -52,7 +52,6 @@ export class UserProfileLookupData implements IUserProfileLookupData {
 }
 
 export class UserProfileLookupDataSerialize {
-
   @ApiProperty()
   @Expose({ name: 'uuid' })
   public readonly uuid: string;
@@ -87,7 +86,6 @@ export class UserProfileLookupDataSerialize {
 }
 
 export class UserProfileLookupManyMessageBodySerialize extends MessageBodySerialize<UserProfileLookupDataSerialize[]> {
-
   @ApiProperty({ type: [UserProfileLookupDataSerialize] })
   @Expose({ name: 'data' })
   @Type(() => UserProfileLookupDataSerialize)

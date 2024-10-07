@@ -1,7 +1,4 @@
-import { PrismaService } from '@/services/prisma.service';
-import { Prisma, User } from '@prisma/client';
-import { createLogger, Nullable, Option, Optional } from '@/utils/common';
-import { Logger } from '@nestjs/common';
+import { Option, Optional } from '@/utils/common';
 
 describe('Optional (e2e)', () => {
   it('/number (OPTIONAL)', async () => {

@@ -40,14 +40,12 @@ export class AccessJwtTokenData implements IAccessJwtTokenData {
 }
 
 export class AccessJwtTokenDataSerialize {
-
   @ApiProperty()
   @Expose({ name: 'access_token' })
   public readonly accessToken: string;
 }
 
 export class AccessJwtTokenMessageBodySerialize extends MessageBodySerialize<AccessJwtTokenDataSerialize> {
-
   @ApiProperty({ type: AccessJwtTokenDataSerialize })
   @Expose({ name: 'data' })
   @Type(() => AccessJwtTokenDataSerialize)

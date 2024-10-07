@@ -30,6 +30,6 @@ async function bootstrap() {
   await app.listen(3000, '0.0.0.0');
 }
 
-bootstrap().catch(e => {
+bootstrap().catch((e) => {
   console.error(e);
 });

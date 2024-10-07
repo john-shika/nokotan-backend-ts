@@ -18,20 +18,20 @@ describe('PrismaService (e2e)', () => {
     // service = module.get<PrismaService>(PrismaService);
 
     service = new PrismaService();
-    service.onModuleInit();
+    await service.onModuleInit();
 
     logger = createLogger('PrismaService');
     logger.log('test started');
   });
 
   afterEach(async () => {
-    service.onModuleDestroy();
+    await service.onModuleDestroy();
 
     logger.log('test done');
   });
 
   it('/user (CREATE, DELETE)', async () => {
-    const user: Prisma.UserCreateInput = {
+    const user: Prisma.usersCreateInput = {
       uuid: uuid.v7(),
       username: 'prisma',
       password: 'prisma',
@@ -40,13 +40,11 @@ describe('PrismaService (e2e)', () => {
       admin: false,
     };
 
-    console.log(user);
-
     let temp: Nullable<User>;
 
     await (async () => {
       logger.log('find user if exists');
-      const check: Nullable<User> = await service.user.findFirst({
+      const check: Nullable<User> = await service.users.findFirst({
         where: {
           username: user.username,
           email: user.email,
@@ -59,7 +57,7 @@ describe('PrismaService (e2e)', () => {
       if (!check) {
         logger.log('create new user');
 
-        const data: Nullable<User> = await service.user.create({
+        const data: Nullable<User> = await service.users.create({
           data: user,
         });
 
@@ -70,7 +68,7 @@ describe('PrismaService (e2e)', () => {
     await (async () => {
       logger.log('delete current user');
 
-      const user: Nullable<User> = await service.user.delete({
+      const user: Nullable<User> = await service.users.delete({
         where: {
           id: temp?.id,
         },
