@@ -7,29 +7,29 @@ export interface IMessageBody<T extends any> {
   status: HttpStatusText;
   status_ok: boolean;
   status_code: HttpStatusCodes;
-  timestamp: string;
   message: string;
+  timestamp: string;
   data?: T;
 }
 
 export function setStatusMessage<T extends any>(messageBody: IMessageBody<T>, code: HttpStatusCodes) {
-  messageBody.status = getHttpStatusText(code);
-  messageBody.status_code = code;
   messageBody.status_ok = 200 <= code && code < 300;
+  messageBody.status_code = code;
+  messageBody.status = getHttpStatusText(code);
 }
 
 export class MessageBody<T extends any> implements IMessageBody<T> {
-  status: HttpStatusText;
   status_ok: boolean;
   status_code: HttpStatusCodes;
-  timestamp: string;
+  status: HttpStatusText;
   message: string;
+  timestamp: string;
   data?: T;
 
   constructor(code: HttpStatusCodes, message: string) {
     setStatusMessage(this, code);
-    this.timestamp = getDateISOString();
     this.message = message;
+    this.timestamp = getDateISOString();
   }
 
   setData(data: any): this {
@@ -40,10 +40,6 @@ export class MessageBody<T extends any> implements IMessageBody<T> {
 
 export class MessageBodySerialize<T extends any> implements HttpMessageBody<T> {
   @ApiProperty()
-  @Expose({ name: 'status' })
-  status: HttpStatusText;
-
-  @ApiProperty()
   @Expose({ name: 'status_ok' })
   statusOk: boolean;
 
@@ -52,12 +48,16 @@ export class MessageBodySerialize<T extends any> implements HttpMessageBody<T> {
   statusCode: HttpStatusCodes;
 
   @ApiProperty()
-  @Expose({ name: 'timestamp' })
-  timestamp: string;
+  @Expose({ name: 'status' })
+  status: HttpStatusText;
 
   @ApiProperty()
   @Expose({ name: 'message' })
   message: string;
+
+  @ApiProperty()
+  @Expose({ name: 'timestamp' })
+  timestamp: string;
 
   @ApiProperty()
   @Expose({ name: 'data' })

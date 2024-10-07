@@ -254,9 +254,9 @@ export function getHttpStatusText(code: HttpStatusCodes): HttpStatusText {
 }
 
 export function setStatusMessage(messageBody: HttpMessageStatus, code: HttpStatusCodes) {
-  messageBody.status = getHttpStatusText(code);
-  messageBody.statusCode = code;
   messageBody.statusOk = 200 <= code && code < 300;
+  messageBody.statusCode = code;
+  messageBody.status = getHttpStatusText(code);
 }
 
 export default HttpStatusCodes;
