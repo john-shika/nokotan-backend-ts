@@ -14,7 +14,7 @@ import MessageBody, { MessageBodySerialize } from '@/schemas/MessageBody';
 import { User } from '@/models/User';
 import { Session, Sessions } from '@/models/Session';
 import type { Request } from 'express';
-import type { ILoginBodyForm } from '@/schemas/LoginBodyForm';
+import type { ILoginBodyForm } from '@/schemas/LoginFormBody';
 import {
   IUserSessionLookupManyMessageBody,
   IUserSessionLookupDataMany,

@@ -3,7 +3,7 @@ import { PrismaService } from './prisma.service';
 import { Prisma } from '@prisma/client';
 import { createLogger, getAttrToString, getDateISOString, getDateToday, Nullable } from '@/utils/common';
 import { User, Users } from '@/models/User';
-import { ILoginBodyForm } from '@/schemas/LoginBodyForm';
+import { ILoginBodyForm } from '@/schemas/LoginFormBody';
 
 @Injectable()
 export class UsersService {
