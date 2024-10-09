@@ -16,6 +16,6 @@ foreach ($item in $items) {
 
 npx prisma migrate dev --name init
 
-node scripts/database/dummy/users.cjs
+node "scripts/database/feeders/users.cjs"
 
 Write-Output "User inserted successfully"

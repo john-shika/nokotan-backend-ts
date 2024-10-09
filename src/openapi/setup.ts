@@ -11,6 +11,14 @@ export function init(app: NestExpressApplication<Server<typeof IncomingMessage, 
       .setTitle('Nokotan Backend Api')
       .setDescription('A Nokotan Backend Api Documentation')
       .setVersion('1.0')
+      .addBearerAuth({
+        name: undefined,
+        scheme: 'Bearer',
+        bearerFormat: undefined,
+        description: `Please enter token in following format: Bearer <JWT>`,
+        type: 'http',
+        in: undefined,
+      })
       .build();
 
     const document = SwaggerModule.createDocument(app, config);

@@ -1,28 +1,7 @@
-import {
-  CanActivate,
-  ClassProvider,
-  ExecutionContext,
-  Injectable,
-  InternalServerErrorException,
-  Logger,
-  UnauthorizedException,
-} from '@nestjs/common';
-import { JwtService } from '@nestjs/jwt';
-import { debugConstants, jwtConstants } from '@/globals/constants';
+import { CanActivate, ClassProvider, ExecutionContext, Injectable, Logger } from '@nestjs/common';
+import { debugConstants } from '@/globals/constants';
 import { APP_GUARD, Reflector } from '@nestjs/core';
-import { IS_AUTHORIZE_KEY } from '@/decorators/authorize.decorator';
-import { IClaimsJwtToken } from '@/schemas/JwtToken';
-import {
-  createLogger,
-  provideService as createProviderService,
-  defineProperty,
-  extractTokenFromHeader,
-  getName,
-  isActivated,
-  Logging,
-} from '@/utils/common';
-import type { Request } from 'express';
-import { SessionsService } from './sessions.service';
+import { createLogger, createProviderService, isActivated } from '@/utils/common';
 import { IS_TESTING_KEY } from '@/decorators/testing.decorator';
 
 @Injectable()

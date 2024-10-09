@@ -14,26 +14,24 @@ import { IS_AUTHORIZE_KEY } from '@/decorators/authorize.decorator';
 import { IClaimsJwtToken } from '@/schemas/JwtToken';
 import {
   createLogger,
-  provideService as createProviderService,
+  createProviderService as createProviderService,
   defineProperty,
   extractTokenFromHeader,
-  getName,
   isActivated,
-  Logging,
 } from '@/utils/common';
 import type { Request } from 'express';
-import { SessionsService } from './sessions.service';
+import { SessionService } from './session.service';
 
 @Injectable()
 export class AuthGuard implements CanActivate {
   public readonly logger: Logger = createLogger(this);
 
-  private readonly sessionsService: SessionsService;
+  private readonly sessionService: SessionService;
   private readonly jwtService: JwtService;
   private readonly reflector: Reflector;
 
-  constructor(sessionsService: SessionsService, jwtService: JwtService, reflector: Reflector) {
-    this.sessionsService = sessionsService;
+  constructor(sessionsService: SessionService, jwtService: JwtService, reflector: Reflector) {
+    this.sessionService = sessionsService;
     this.jwtService = jwtService;
     this.reflector = reflector;
   }
@@ -71,7 +69,7 @@ export class AuthGuard implements CanActivate {
         }
       })();
 
-      const session = await this.sessionsService.sessionUserPreload({
+      const session = await this.sessionService.sessionUserPreload({
         uuid: sessionUUID,
         deleted_at: null,
       });
@@ -93,13 +91,13 @@ export class AuthGuard implements CanActivate {
       })();
 
       // remove new token from session
-      if (newToken === token) newToken = '..';
+      if (newToken === token) newToken = null;
 
       await (async () => {
         const updatedAt = new Date();
 
         // update session
-        const session = await this.sessionsService.updateSession({
+        const session = await this.sessionService.updateSession({
           where: {
             uuid: sessionUUID,
             deleted_at: null,
@@ -115,6 +113,7 @@ export class AuthGuard implements CanActivate {
           throw new InternalServerErrorException();
         }
 
+        // make it request as RequestAuthGuard interface
         defineProperty(request, 'user', user);
         defineProperty(request, 'session', session);
       })();

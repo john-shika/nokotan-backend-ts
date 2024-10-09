@@ -42,8 +42,16 @@
       "~/*": ["src/*"]
     }
   },
-  "include": ["src/**/*",
-    "tests/**/*"
-  ],
-  "exclude": ["node_modules", "dist", "prisma", "scripts", "**/.eslintrc.cjs", "**/eslint.config.mjs", "**/jest-e2e.config.mjs", "**/jest.config.mjs", "**/prettier.config.mjs", ]
+  "include": ["src/**/*", "tests/**/*"],
+  "exclude": [
+    "node_modules",
+    "dist",
+    "public",
+    "scripts",
+    "**/.eslintrc.{js,cjs,mjs,ts,cts,mts}",
+    "**/eslint.config.{js,cjs,mjs,ts,cts,mts}",
+    "**/jest-e2e.config.{js,cjs,mjs,ts,cts,mts}",
+    "**/jest.config.{js,cjs,mjs,ts,cts,mts}",
+    "**/prettier.config.{js,cjs,mjs,ts,cts,mts}"
+  ]
 }

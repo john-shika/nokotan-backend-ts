@@ -7,7 +7,7 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model users {
+model User {
   id   Int    @id @default(autoincrement())
   uuid String @unique
 
@@ -17,26 +17,28 @@ model users {
   email    String?    @unique
   phone    String?    @unique
   admin    Boolean
-  sessions sessions[]
+  sessions Session[]
 
   created_at DateTime  @default(now())
   updated_at DateTime  @updatedAt
   deleted_at DateTime?
+	@@map("users")
 }
 
-model sessions {
+model Session {
   id   Int    @id @default(autoincrement())
   uuid String @unique
 
   user_id    Int
-  token      String
-  new_token  String?
+  token      String? @unique
+  new_token  String? @unique
   ip_addr    String
   user_agent String
   expired_at DateTime?
-  user       users     @relation(fields: [user_id], references: [id])
+  user       User     @relation(fields: [user_id], references: [id])
 
   created_at DateTime  @default(now())
   updated_at DateTime  @updatedAt
   deleted_at DateTime?
+	@@map("sessions")
 }

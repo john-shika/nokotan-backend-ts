@@ -1,4 +1,17 @@
 {
   "extends": "./tsconfig.json",
-  "exclude": ["node_modules", "dist", "prisma", "scripts", "tests", "**/.eslintrc.cjs", "**/eslint.config.mjs", "**/jest-e2e.config.mjs", "**/jest.config.mjs", "**/prettier.config.mjs", "**/*.spec.ts", "**/*.e2e-spec.ts"]
+  "exclude": [
+    "node_modules",
+    "dist",
+    "public",
+    "scripts",
+    "tests",
+    "**/.eslintrc.{js,cjs,mjs,ts,cts,mts}",
+    "**/eslint.config.{js,cjs,mjs,ts,cts,mts}",
+    "**/jest-e2e.config.{js,cjs,mjs,ts,cts,mts}",
+    "**/jest.config.{js,cjs,mjs,ts,cts,mts}",
+    "**/prettier.config.{js,cjs,mjs,ts,cts,mts}",
+    "**/*.spec.ts",
+    "**/*.e2e-spec.ts"
+  ]
 }

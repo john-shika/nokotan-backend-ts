@@ -68,74 +68,78 @@ export enum HttpStatusCodes {
 }
 
 export class HttpStatusText {
-  public static CONTINUE: string = "CONTINUE";
-  public static SWITCHING_PROTOCOLS: string = "SWITCHING_PROTOCOLS";
-  public static PROCESSING: string = "PROCESSING";
-  public static EARLY_HINTS: string = "EARLY_HINTS";
-  public static OK: string = "OK";
-  public static CREATED: string = "CREATED";
-  public static ACCEPTED: string = "ACCEPTED";
-  public static NON_AUTHORITATIVE_INFORMATION: string = "NON_AUTHORITATIVE_INFORMATION";
-  public static NO_CONTENT: string = "NO_CONTENT";
-  public static RESET_CONTENT: string = "RESET_CONTENT";
-  public static PARTIAL_CONTENT: string = "PARTIAL_CONTENT";
-  public static MULTI_STATUS: string = "MULTI_STATUS";
-  public static ALREADY_REPORTED: string = "ALREADY_REPORTED";
-  public static IM_USED: string = "IM_USED";
-  public static MULTI_CHOICES: string = "MULTI_CHOICES";
-  public static MOVED_PERMANENTLY: string = "MOVED_PERMANENTLY";
-  public static FOUND: string = "FOUND";
-  public static SEE_OTHER: string = "SEE_OTHER";
-  public static NOT_MODIFIED: string = "NOT_MODIFIED";
-  public static USE_PROXY: string = "USE_PROXY";
-  public static UNUSED: string = "UNUSED";
-  public static TEMPORARY_REDIRECT: string = "TEMPORARY_REDIRECT";
-  public static PERMANENT_REDIRECT: string = "PERMANENT_REDIRECT";
-  public static BAD_REQUEST: string = "BAD_REQUEST";
-  public static UNAUTHORIZED: string = "UNAUTHORIZED";
-  public static PAYMENT_REQUIRED: string = "PAYMENT_REQUIRED";
-  public static FORBIDDEN: string = "FORBIDDEN";
-  public static NOT_FOUND: string = "NOT_FOUND";
-  public static METHOD_NOT_ALLOWED: string = "METHOD_NOT_ALLOWED";
-  public static NOT_ACCEPTABLE: string = "NOT_ACCEPTABLE";
-  public static PROXY_AUTHENTICATION_REQUIRED: string = "PROXY_AUTHENTICATION_REQUIRED";
-  public static REQUEST_TIMEOUT: string = "REQUEST_TIMEOUT";
-  public static CONFLICT: string = "CONFLICT";
-  public static GONE: string = "GONE";
-  public static LENGTH_REQUIRED: string = "LENGTH_REQUIRED";
-  public static PRECONDITION_FAILED: string = "PRECONDITION_FAILED";
-  public static PAYLOAD_TOO_LARGE: string = "PAYLOAD_TOO_LARGE";
-  public static REQUEST_URI_TOO_LONG: string = "REQUEST_URI_TOO_LONG";
-  public static UNSUPPORTED_MEDIA_TYPE: string = "UNSUPPORTED_MEDIA_TYPE";
-  public static REQUESTED_RANGE_NOT_SATISFIABLE: string = "REQUESTED_RANGE_NOT_SATISFIABLE";
-  public static EXPECTATION_FAILED: string = "EXPECTATION_FAILED";
-  public static IM_A_TEAPOT: string = "IM_A_TEAPOT";
-  public static INSUFFICIENT_SPACE_ON_RESOURCE: string = "INSUFFICIENT_SPACE_ON_RESOURCE";
-  public static METHOD_FAILURE: string = "METHOD_FAILURE";
-  public static MISDIRECTED_REQUEST: string = "MISDIRECTED_REQUEST";
-  public static UNPROCESSABLE_ENTITY: string = "UNPROCESSABLE_ENTITY";
-  public static LOCKED: string = "LOCKED";
-  public static FAILED_DEPENDENCY: string = "FAILED_DEPENDENCY";
-  public static UPGRADE_REQUIRED: string = "UPGRADE_REQUIRED";
-  public static PRECONDITION_REQUIRED: string = "PRECONDITION_REQUIRED";
-  public static TOO_MANY_REQUESTS: string = "TOO_MANY_REQUESTS";
-  public static REQUEST_HEADER_FIELDS_TOO_LARGE: string = "REQUEST_HEADER_FIELDS_TOO_LARGE";
-  public static UNAVAILABLE_FOR_LEGAL_REASONS: string = "UNAVAILABLE_FOR_LEGAL_REASONS";
-  public static INTERNAL_SERVER_ERROR: string = "INTERNAL_SERVER_ERROR";
-  public static NOT_IMPLEMENTED: string = "NOT_IMPLEMENTED";
-  public static BAD_GATEWAY: string = "BAD_GATEWAY";
-  public static SERVICE_UNAVAILABLE: string = "SERVICE_UNAVAILABLE";
-  public static GATEWAY_TIMEOUT: string = "GATEWAY_TIMEOUT";
-  public static HTTP_VERSION_NOT_SUPPORTED: string = "HTTP_VERSION_NOT_SUPPORTED";
-  public static VARIANT_ALSO_NEGOTIATES: string = "VARIANT_ALSO_NEGOTIATES";
-  public static INSUFFICIENT_STORAGE: string = "INSUFFICIENT_STORAGE";
-  public static LOOP_DETECTED: string = "LOOP_DETECTED";
-  public static NOT_EXTENDED: string = "NOT_EXTENDED";
-  public static NETWORK_AUTHENTICATION_REQUIRED: string = "NETWORK_AUTHENTICATION_REQUIRED";
+  public static CONTINUE: string = 'CONTINUE';
+  public static SWITCHING_PROTOCOLS: string = 'SWITCHING_PROTOCOLS';
+  public static PROCESSING: string = 'PROCESSING';
+  public static EARLY_HINTS: string = 'EARLY_HINTS';
+  public static OK: string = 'OK';
+  public static CREATED: string = 'CREATED';
+  public static ACCEPTED: string = 'ACCEPTED';
+  public static NON_AUTHORITATIVE_INFORMATION: string = 'NON_AUTHORITATIVE_INFORMATION';
+  public static NO_CONTENT: string = 'NO_CONTENT';
+  public static RESET_CONTENT: string = 'RESET_CONTENT';
+  public static PARTIAL_CONTENT: string = 'PARTIAL_CONTENT';
+  public static MULTI_STATUS: string = 'MULTI_STATUS';
+  public static ALREADY_REPORTED: string = 'ALREADY_REPORTED';
+  public static IM_USED: string = 'IM_USED';
+  public static MULTI_CHOICES: string = 'MULTI_CHOICES';
+  public static MOVED_PERMANENTLY: string = 'MOVED_PERMANENTLY';
+  public static FOUND: string = 'FOUND';
+  public static SEE_OTHER: string = 'SEE_OTHER';
+  public static NOT_MODIFIED: string = 'NOT_MODIFIED';
+  public static USE_PROXY: string = 'USE_PROXY';
+  public static UNUSED: string = 'UNUSED';
+  public static TEMPORARY_REDIRECT: string = 'TEMPORARY_REDIRECT';
+  public static PERMANENT_REDIRECT: string = 'PERMANENT_REDIRECT';
+  public static BAD_REQUEST: string = 'BAD_REQUEST';
+  public static UNAUTHORIZED: string = 'UNAUTHORIZED';
+  public static PAYMENT_REQUIRED: string = 'PAYMENT_REQUIRED';
+  public static FORBIDDEN: string = 'FORBIDDEN';
+  public static NOT_FOUND: string = 'NOT_FOUND';
+  public static METHOD_NOT_ALLOWED: string = 'METHOD_NOT_ALLOWED';
+  public static NOT_ACCEPTABLE: string = 'NOT_ACCEPTABLE';
+  public static PROXY_AUTHENTICATION_REQUIRED: string = 'PROXY_AUTHENTICATION_REQUIRED';
+  public static REQUEST_TIMEOUT: string = 'REQUEST_TIMEOUT';
+  public static CONFLICT: string = 'CONFLICT';
+  public static GONE: string = 'GONE';
+  public static LENGTH_REQUIRED: string = 'LENGTH_REQUIRED';
+  public static PRECONDITION_FAILED: string = 'PRECONDITION_FAILED';
+  public static PAYLOAD_TOO_LARGE: string = 'PAYLOAD_TOO_LARGE';
+  public static REQUEST_URI_TOO_LONG: string = 'REQUEST_URI_TOO_LONG';
+  public static UNSUPPORTED_MEDIA_TYPE: string = 'UNSUPPORTED_MEDIA_TYPE';
+  public static REQUESTED_RANGE_NOT_SATISFIABLE: string = 'REQUESTED_RANGE_NOT_SATISFIABLE';
+  public static EXPECTATION_FAILED: string = 'EXPECTATION_FAILED';
+  public static IM_A_TEAPOT: string = 'IM_A_TEAPOT';
+  public static INSUFFICIENT_SPACE_ON_RESOURCE: string = 'INSUFFICIENT_SPACE_ON_RESOURCE';
+  public static METHOD_FAILURE: string = 'METHOD_FAILURE';
+  public static MISDIRECTED_REQUEST: string = 'MISDIRECTED_REQUEST';
+  public static UNPROCESSABLE_ENTITY: string = 'UNPROCESSABLE_ENTITY';
+  public static LOCKED: string = 'LOCKED';
+  public static FAILED_DEPENDENCY: string = 'FAILED_DEPENDENCY';
+  public static UPGRADE_REQUIRED: string = 'UPGRADE_REQUIRED';
+  public static PRECONDITION_REQUIRED: string = 'PRECONDITION_REQUIRED';
+  public static TOO_MANY_REQUESTS: string = 'TOO_MANY_REQUESTS';
+  public static REQUEST_HEADER_FIELDS_TOO_LARGE: string = 'REQUEST_HEADER_FIELDS_TOO_LARGE';
+  public static UNAVAILABLE_FOR_LEGAL_REASONS: string = 'UNAVAILABLE_FOR_LEGAL_REASONS';
+  public static INTERNAL_SERVER_ERROR: string = 'INTERNAL_SERVER_ERROR';
+  public static NOT_IMPLEMENTED: string = 'NOT_IMPLEMENTED';
+  public static BAD_GATEWAY: string = 'BAD_GATEWAY';
+  public static SERVICE_UNAVAILABLE: string = 'SERVICE_UNAVAILABLE';
+  public static GATEWAY_TIMEOUT: string = 'GATEWAY_TIMEOUT';
+  public static HTTP_VERSION_NOT_SUPPORTED: string = 'HTTP_VERSION_NOT_SUPPORTED';
+  public static VARIANT_ALSO_NEGOTIATES: string = 'VARIANT_ALSO_NEGOTIATES';
+  public static INSUFFICIENT_STORAGE: string = 'INSUFFICIENT_STORAGE';
+  public static LOOP_DETECTED: string = 'LOOP_DETECTED';
+  public static NOT_EXTENDED: string = 'NOT_EXTENDED';
+  public static NETWORK_AUTHENTICATION_REQUIRED: string = 'NETWORK_AUTHENTICATION_REQUIRED';
 
   public static ToUpperSnakeCase(value: string): string {
     if (IsNoneOrEmptyOrWhiteSpace(value)) return '';
-    return value.trim().replace(/(?<!^)(?=[A-Z])|[-_\s]+/g, "_").replace(/[-_\s]+/g, "_").toUpperCase();
+    return value
+      .trim()
+      .replace(/(?<!^)(?=[A-Z])|[-_\s]+/g, '_')
+      .replace(/[-_\s]+/g, '_')
+      .toUpperCase();
   }
 
   public static getCode(statusText: string): HttpStatusCodes {
@@ -405,7 +409,7 @@ export class HttpStatusText {
       case HttpStatusCodes.NETWORK_AUTHENTICATION_REQUIRED:
         return HttpStatusText.NETWORK_AUTHENTICATION_REQUIRED;
       default:
-        throw new Error("Invalid status code");
+        throw new Error('Invalid status code');
     }
   }
 }

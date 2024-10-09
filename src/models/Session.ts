@@ -1,15 +1,15 @@
 import BaseModel, { Model } from '@/models/Model';
 import { Nullable } from '@/utils/common';
-import { users } from '@prisma/client';
+import { User } from '@prisma/client';
 
 export interface Session extends Model {
   user_id: number;
-  token: string;
+  token: Nullable<string>;
   new_token: Nullable<string>;
   ip_addr: string;
   user_agent: string;
   expired_at: Nullable<Date>;
-  user?: users; // preload using @prisma/client
+  user?: User; // preload using @prisma/client
 }
 
 export type Sessions = Session[];

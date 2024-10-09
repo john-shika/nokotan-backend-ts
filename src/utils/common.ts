@@ -86,7 +86,7 @@ export function getDateISOString(): string {
   return new Date().toISOString();
 }
 
-export function provideService(providerName: string, service: any): ClassProvider<any> {
+export function createProviderService(providerName: string, service: any): ClassProvider<any> {
   return {
     provide: providerName,
     useClass: service,
@@ -101,7 +101,7 @@ export function getUserAgent(req: Request): string {
   return req.headers['user-agent'] || 'Agent/1.0';
 }
 
-export function extractTokenFromHeader(request: Request): string | undefined {
+export function extractTokenFromHeader(request: Request): Optional<string> {
   const tokens = request.headers.authorization?.split(' ') ?? [];
   if (tokens.length > 1) {
     const [type, token] = tokens.map((e) => e.trim());
@@ -185,7 +185,7 @@ export function isNoneOrEmpty(value?: string): boolean {
 
 export function isNoneOrWhiteSpace(value?: string): boolean {
   if (OptCond.None(value)) return true;
-  for (let c of value) {
+  for (const c of value) {
     if (c === ' ' || c === '\t' || c === '\n' || c === '\r') continue;
     return false;
   }
@@ -198,6 +198,6 @@ export function IsNoneOrEmptyOrWhiteSpace(value?: string): boolean {
 
 export function getDateToday(): Date {
   const currentTime = new Date();
-  currentTime.setHours(0, 0, 0, 0)
+  currentTime.setHours(0, 0, 0, 0);
   return currentTime;
 }

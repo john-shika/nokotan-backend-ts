@@ -6,7 +6,7 @@ import { User, Users } from '@/models/User';
 import { ILoginBodyForm } from '@/schemas/LoginFormBody';
 
 @Injectable()
-export class UsersService {
+export class UserService {
   public readonly logger: Logger = createLogger(this);
 
   private readonly prisma: PrismaService;
@@ -19,7 +19,7 @@ export class UsersService {
     return user.password === password;
   }
 
-  async authLogin(body: ILoginBodyForm): Promise<Nullable<User>> {
+  async userByLoginBodyForm(body: ILoginBodyForm): Promise<Nullable<User>> {
     const username = getAttrToString(body, 'username');
     const password = getAttrToString(body, 'password');
     const email = getAttrToString(body, 'email');
@@ -27,11 +27,11 @@ export class UsersService {
 
     let user: User;
     if (username) {
-      user = await this.findOneByUserName(username);
+      user = await this.userByUserName(username);
     } else if (email) {
-      user = await this.findOneByEmail(email);
+      user = await this.userByEmail(email);
     } else if (phone) {
-      user = await this.findOneByPhone(phone);
+      user = await this.userByPhone(phone);
     } else {
       return null;
     }
@@ -40,9 +40,9 @@ export class UsersService {
     return check ? user : null;
   }
 
-  async findOneById(id: number): Promise<Nullable<User>> {
+  async userById(id: number): Promise<Nullable<User>> {
     return (
-      (await this.prisma.users.findFirst({
+      (await this.prisma.user.findFirst({
         where: {
           id,
           deleted_at: null,
@@ -51,9 +51,9 @@ export class UsersService {
     );
   }
 
-  async findOneByUserName(username: string): Promise<Nullable<User>> {
+  async userByUserName(username: string): Promise<Nullable<User>> {
     return (
-      (await this.prisma.users.findFirst({
+      (await this.prisma.user.findFirst({
         where: {
           username,
           deleted_at: null,
@@ -62,9 +62,9 @@ export class UsersService {
     );
   }
 
-  async findOneByEmail(email: string): Promise<Nullable<User>> {
+  async userByEmail(email: string): Promise<Nullable<User>> {
     return (
-      (await this.prisma.users.findFirst({
+      (await this.prisma.user.findFirst({
         where: {
           email,
           deleted_at: null,
@@ -73,9 +73,9 @@ export class UsersService {
     );
   }
 
-  async findOneByPhone(phone: string): Promise<Nullable<User>> {
+  async userByPhone(phone: string): Promise<Nullable<User>> {
     return (
-      (await this.prisma.users.findFirst({
+      (await this.prisma.user.findFirst({
         where: {
           phone,
           deleted_at: null,
@@ -84,8 +84,8 @@ export class UsersService {
     );
   }
 
-  async removeById(id: number): Promise<Nullable<User>> {
-    return this.prisma.users.update({
+  async removeUserById(id: number): Promise<Nullable<User>> {
+    return this.prisma.user.update({
       where: {
         id,
         deleted_at: null,
@@ -96,8 +96,8 @@ export class UsersService {
     });
   }
 
-  async removeByUserName(username: string): Promise<Nullable<User>> {
-    return this.prisma.users.update({
+  async removeUserByUserName(username: string): Promise<Nullable<User>> {
+    return this.prisma.user.update({
       where: {
         username,
         deleted_at: null,
@@ -108,8 +108,8 @@ export class UsersService {
     });
   }
 
-  async removeByEmail(email: string): Promise<Nullable<User>> {
-    return this.prisma.users.update({
+  async removeUserByEmail(email: string): Promise<Nullable<User>> {
+    return this.prisma.user.update({
       where: {
         email,
         deleted_at: null,
@@ -120,8 +120,8 @@ export class UsersService {
     });
   }
 
-  async removeByPhone(phone: string): Promise<Nullable<User>> {
-    return this.prisma.users.update({
+  async removeUserByPhone(phone: string): Promise<Nullable<User>> {
+    return this.prisma.user.update({
       where: {
         phone,
         deleted_at: null,
@@ -134,15 +134,15 @@ export class UsersService {
 
   // low profile without checking column `deleted_at` at first time
 
-  async user(userWhereUniqueInput: Prisma.usersWhereUniqueInput): Promise<Nullable<User>> {
-    return this.prisma.users.findUnique({
+  async user(userWhereUniqueInput: Prisma.UserWhereUniqueInput): Promise<Nullable<User>> {
+    return this.prisma.user.findUnique({
       where: userWhereUniqueInput,
     });
   }
 
-  async userSessionsPreload(userWhereUniqueInput: Prisma.usersWhereUniqueInput): Promise<Nullable<User>> {
+  async userSessionsPreload(userWhereUniqueInput: Prisma.UserWhereUniqueInput): Promise<Nullable<User>> {
     const today = getDateToday();
-    return this.prisma.users.findUnique({
+    return this.prisma.user.findUnique({
       where: userWhereUniqueInput,
       include: {
         sessions: {
@@ -161,12 +161,12 @@ export class UsersService {
   async users(params: {
     skip?: number;
     take?: number;
-    cursor?: Prisma.usersWhereUniqueInput;
-    where?: Prisma.usersWhereInput;
-    orderBy?: Prisma.usersOrderByWithRelationInput;
+    cursor?: Prisma.UserWhereUniqueInput;
+    where?: Prisma.UserWhereInput;
+    orderBy?: Prisma.UserOrderByWithRelationInput;
   }): Promise<Users> {
     const { skip, take, cursor, where, orderBy } = params;
-    return this.prisma.users.findMany({
+    return this.prisma.user.findMany({
       skip,
       take,
       cursor,
@@ -175,22 +175,22 @@ export class UsersService {
     });
   }
 
-  async createUser(data: Prisma.usersCreateInput): Promise<User> {
-    return this.prisma.users.create({
+  async createUser(data: Prisma.UserCreateInput): Promise<User> {
+    return this.prisma.user.create({
       data,
     });
   }
 
-  async updateUser(params: { where: Prisma.usersWhereUniqueInput; data: Prisma.usersUpdateInput }): Promise<User> {
+  async updateUser(params: { where: Prisma.UserWhereUniqueInput; data: Prisma.UserUpdateInput }): Promise<User> {
     const { where, data } = params;
-    return this.prisma.users.update({
+    return this.prisma.user.update({
       data,
       where,
     });
   }
 
-  async deleteUser(where: Prisma.usersWhereUniqueInput): Promise<User> {
-    return this.prisma.users.delete({
+  async deleteUser(where: Prisma.UserWhereUniqueInput): Promise<User> {
+    return this.prisma.user.delete({
       where,
     });
   }

@@ -1,27 +1,35 @@
 import * as uuid from 'uuid';
 import { Injectable, InternalServerErrorException, Logger, Req, UnauthorizedException } from '@nestjs/common';
-import { UsersService } from '@/services/users.service';
+import { UserService } from '@/services/user.service';
 import { JwtService } from '@nestjs/jwt';
 import { jwtConstants } from '@/globals/constants';
 import HttpStatusCodes from '@/utils/net/http';
 import MessageBody from '@/schemas/MessageBody';
 import { AccessJwtTokenData, IAccessJwtTokenMessageBody, IClaimsJwtToken } from '@/schemas/JwtToken';
-import { SessionsService } from './sessions.service';
-import { createLogger, getIPAddress, getJwtTokenCreatedAt, getJwtTokenExpiredAt, getUserAgent } from '@/utils/common';
+import { SessionService } from './session.service';
+import {
+  createLogger,
+  extractTokenFromHeader,
+  getIPAddress,
+  getJwtTokenCreatedAt,
+  getJwtTokenExpiredAt,
+  getUserAgent,
+} from '@/utils/common';
 import type { ILoginBodyForm } from '@/schemas/LoginFormBody';
 import type { Request } from 'express';
+import type { RequestAuthGuard } from '@/schemas/RequestAuthGuard';
 
 @Injectable()
 export class AuthService {
   public readonly logger: Logger = createLogger(this);
 
-  private readonly usersService: UsersService;
-  private readonly sessionsService: SessionsService;
+  private readonly userService: UserService;
+  private readonly sessionService: SessionService;
   private readonly jwtService: JwtService;
 
-  constructor(usersService: UsersService, sessionsService: SessionsService, jwtService: JwtService) {
-    this.usersService = usersService;
-    this.sessionsService = sessionsService;
+  constructor(usersService: UserService, sessionsService: SessionService, jwtService: JwtService) {
+    this.userService = usersService;
+    this.sessionService = sessionsService;
     this.jwtService = jwtService;
   }
 
@@ -29,7 +37,7 @@ export class AuthService {
     const ip_addr = getIPAddress(req);
     const user_agent = getUserAgent(req);
 
-    const user = await this.usersService.authLogin(body);
+    const user = await this.userService.userByLoginBodyForm(body);
 
     if (!user) {
       throw new UnauthorizedException();
@@ -48,12 +56,12 @@ export class AuthService {
 
     // update empty session for insert new token
 
-    const session = await this.sessionsService.createSession({
+    await this.sessionService.createSession({
       user: {
         connect: { id: user.id },
       },
       uuid: sessionUUID,
-      token: '..',
+      token: null,
       ip_addr,
       user_agent,
       new_token: jwtToken,
@@ -61,11 +69,52 @@ export class AuthService {
       updated_at: createdAt,
     });
 
-    if (!session) {
-      throw new InternalServerErrorException();
+    const messageBody = new MessageBody(HttpStatusCodes.CREATED, 'Created JWT token successfully');
+    const accessJwtToken = new AccessJwtTokenData(jwtToken);
+
+    return messageBody.setData(accessJwtToken) as IAccessJwtTokenMessageBody;
+  }
+
+  async authLogout(@Req() req: RequestAuthGuard): Promise<MessageBody<unknown>> {
+    const session = req.session;
+
+    const token = extractTokenFromHeader(req);
+
+    if (!token) {
+      throw new UnauthorizedException();
     }
 
-    const messageBody = new MessageBody(HttpStatusCodes.CREATED, 'Created JWT token successfully');
+    await this.sessionService.removeSessionById(session.id);
+
+    const messageBody = new MessageBody(HttpStatusCodes.NO_CONTENT, 'Logged out successfully');
+    return messageBody;
+  }
+
+  async authRefreshToken(@Req() req: RequestAuthGuard): Promise<IAccessJwtTokenMessageBody> {
+    const user = req.user;
+    const session = req.session;
+
+    const sessionUUID = uuid.v7();
+
+    const payload: IClaimsJwtToken = { sub: sessionUUID, username: user.username };
+    const jwtToken = await this.jwtService.signAsync(payload, {
+      secret: jwtConstants.secretKey,
+    });
+
+    const claimsJwtToken = this.jwtService.decode(jwtToken) as IClaimsJwtToken;
+    const expiredAt = getJwtTokenExpiredAt(claimsJwtToken);
+    const updatedAt = getJwtTokenCreatedAt(claimsJwtToken);
+
+    await this.sessionService.updateSession({
+      where: { id: session.id },
+      data: {
+        new_token: jwtToken,
+        expired_at: expiredAt,
+        updated_at: updatedAt,
+      },
+    });
+
+    const messageBody = new MessageBody(HttpStatusCodes.CREATED, 'Created Refresh JWT token successfully');
     const accessJwtToken = new AccessJwtTokenData(jwtToken);
 
     return messageBody.setData(accessJwtToken) as IAccessJwtTokenMessageBody;

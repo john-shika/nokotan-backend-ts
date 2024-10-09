@@ -5,9 +5,9 @@ import { JwtModule } from '@nestjs/jwt';
 import { AuthController } from '@/controllers/auth.controller';
 import { jwtConstants } from '@/globals/constants';
 import { AuthGuard } from '@/services/auth-guard.service';
-import { UsersService } from '@/services/users.service';
+import { UserService } from '@/services/user.service';
 import { PrismaService } from '@/services/prisma.service';
-import { SessionsService } from '@/services/sessions.service';
+import { SessionService } from '@/services/session.service';
 
 @Module({
   imports: [
@@ -18,7 +18,7 @@ import { SessionsService } from '@/services/sessions.service';
       signOptions: { expiresIn: '1h' },
     }),
   ],
-  providers: [AuthService, PrismaService, UsersService, SessionsService, AuthGuard.provider()],
+  providers: [AuthService, PrismaService, UserService, SessionService, AuthGuard.provider()],
   controllers: [AuthController],
   exports: [AuthService],
 })

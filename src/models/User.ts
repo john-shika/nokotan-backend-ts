@@ -1,6 +1,6 @@
 import BaseModel, { Model } from '@/models/Model';
 import { Nullable } from '@/utils/common';
-import { sessions } from '@prisma/client';
+import { Session } from '@prisma/client';
 
 export interface User extends Model {
   fullname: Nullable<string>;
@@ -9,7 +9,7 @@ export interface User extends Model {
   email: Nullable<string>;
   phone: Nullable<string>;
   admin: boolean;
-  sessions?: sessions[]; // preload using @prisma/client
+  sessions?: Session[]; // preload using @prisma/client
 }
 
 export type Users = User[];

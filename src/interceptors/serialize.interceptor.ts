@@ -2,7 +2,7 @@ import { Injectable, NestInterceptor, ExecutionContext, CallHandler, ClassProvid
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { ClassConstructor, plainToInstance } from 'class-transformer';
-import { createLogger, provideService } from '@/utils/common';
+import { createLogger, createProviderService } from '@/utils/common';
 import { APP_INTERCEPTOR } from '@nestjs/core';
 
 export class SerializeInterceptor<T extends any> implements NestInterceptor<T, any> {
@@ -11,7 +11,7 @@ export class SerializeInterceptor<T extends any> implements NestInterceptor<T, a
   constructor(private dto: ClassConstructor<T>) {}
 
   static provide(): ClassProvider<any> {
-    return provideService(APP_INTERCEPTOR, SerializeInterceptor);
+    return createProviderService(APP_INTERCEPTOR, SerializeInterceptor);
   }
 
   intercept(context: ExecutionContext, handler: CallHandler): Observable<any> {

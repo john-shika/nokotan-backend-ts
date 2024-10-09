@@ -2,11 +2,7 @@ import { Session } from '@/models/Session';
 import { IUserSessionLookupData, UserSessionLookupData } from '@/schemas/UserSessionLookup';
 import { sessionIsOnline } from '@/utils/common';
 
-export function getUserSessionLookup(
-  session: Session,
-  sessionId: number,
-  timeThresholdForOnlineCheck: number
-): IUserSessionLookupData {
+export function getUserSessionLookup(session: Session, sessionId: number, timeThresholdForOnlineCheck: number): IUserSessionLookupData {
   const uuid = session.uuid;
   const used = session.id == sessionId;
   const online = used || sessionIsOnline(session, timeThresholdForOnlineCheck);

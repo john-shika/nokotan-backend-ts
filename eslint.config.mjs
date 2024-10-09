@@ -16,7 +16,17 @@ const compat = new FlatCompat({
 
 export default [
   {
-    ignores: ['scripts/**/*.cjs', '**/.eslintrc.cjs', '**/eslint.config.mjs', '**/jest-e2e.config.mjs', '**/jest.config.mjs', '**/prettier.config.mjs'],
+    ignores: [
+      'node_modules/**/*.{js,cjs,mjs,ts,cts,mts}',
+      'dist/**/*.{js,cjs,mjs,ts,cts,mts}',
+      'public/**/*.{js,cjs,mjs,ts,cts,mts}',
+      'scripts/**/*.{js,cjs,mjs,ts,cts,mts}',
+      '**/.eslintrc.{js,cjs,mjs,ts,cts,mts}',
+      '**/eslint.config.{js,cjs,mjs,ts,cts,mts}',
+      '**/jest-e2e.config.{js,cjs,mjs,ts,cts,mts}',
+      '**/jest.config.{js,cjs,mjs,ts,cts,mts}',
+      '**/prettier.config.{js,cjs,mjs,ts,cts,mts}',
+    ],
   },
   ...compat.extends('plugin:@typescript-eslint/recommended', 'plugin:prettier/recommended'),
   {

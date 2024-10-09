@@ -8,7 +8,7 @@ const logger = new Logger('Database\\Dummy');
 async function createUser(data) {
   logger.log(`Checking '${data.username}' user...`);
 
-  const check = await prisma.users.findFirst({
+  const check = await prisma.user.findFirst({
     where: {
       username: data.username,
     },
@@ -17,7 +17,7 @@ async function createUser(data) {
   if (!check) {
     logger.log(`Creating '${data.username}' user...`);
 
-    const user = await prisma.users.create({
+    const user = await prisma.user.create({
       data,
     });
 
