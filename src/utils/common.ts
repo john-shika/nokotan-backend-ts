@@ -86,7 +86,7 @@ export function getDateISOString(): string {
   return new Date().toISOString();
 }
 
-export function createProviderService(providerName: string, service: any): ClassProvider<any> {
+export function createServiceProvider(providerName: string, service: any): ClassProvider<any> {
   return {
     provide: providerName,
     useClass: service,
@@ -119,7 +119,7 @@ export function isActivated(obj: Logging & CanActivate): boolean {
   return true;
 }
 
-export function getJwtTokenExpiredAt(claimsJwtToken: IClaimsJwtToken): Date {
+export function getJwtTokenExpires(claimsJwtToken: IClaimsJwtToken): Date {
   return new Date((claimsJwtToken?.exp ?? 0) * 1000);
 }
 

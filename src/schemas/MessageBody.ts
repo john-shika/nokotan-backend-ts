@@ -43,6 +43,7 @@ export class EmptyMessageBody extends MessageBody<object> {
 }
 
 export class MessageBodySerialize<T extends any> implements HttpMessageBody<T> {
+
   @ApiProperty()
   @Expose({ name: 'status_ok' })
   statusOk: boolean;

@@ -1,11 +1,11 @@
-import { Body, Controller, Get, Header, HttpCode, InternalServerErrorException, Logger, Post, Req } from '@nestjs/common';
+import { Body, Controller, Get, Header, HttpCode, Logger, Post, Req } from '@nestjs/common';
 import { AuthService } from '@/services/auth.service';
 import { UserService } from '@/services/user.service';
 import { Authorize } from '@/decorators/authorize.decorator';
 import { AccessJwtTokenMessageBodySerialize, IAccessJwtTokenMessageBody } from '@/schemas/JwtToken';
 import { ApiResponse, ApiTags } from '@nestjs/swagger';
 import HttpStatusCodes from '@/utils/net/http';
-import MessageBody, { EmptyMessageBody, MessageBodySerialize } from '@/schemas/MessageBody';
+import { EmptyMessageBody, EmptyMessageBodySerialize, MessageBody } from '@/schemas/MessageBody';
 import type { Request } from 'express';
 import type { ILoginBodyForm } from '@/schemas/LoginFormBody';
 import type { IRegisterBodyForm } from '@/schemas/RegisterFormBody';
@@ -13,6 +13,12 @@ import { IUserSessionLookupManyMessageBody, UserSessionLookupManyMessageBodySeri
 import { Serialize } from '@/decorators/serialize.decorator';
 import { createLogger } from '@/utils/common';
 import type { RequestAuthGuard } from '@/schemas/RequestAuthGuard';
+import {
+  IUserInfoData,
+  IUserInfoMessageBody, UserInfoData,
+  UserInfoDataSerialize,
+  UserInfoMessageBodySerialize,
+} from '@/schemas/UserInfoData';
 
 @Controller('auth')
 export class AuthController {
@@ -59,15 +65,15 @@ export class AuthController {
   @Header('Content-Type', 'application/json')
   @ApiResponse({
     description: 'Logout Account',
-    type: MessageBodySerialize,
+    type: EmptyMessageBodySerialize,
   })
-  @Serialize(MessageBodySerialize)
+  @Serialize(EmptyMessageBodySerialize)
   async signOut(@Req() req: RequestAuthGuard): Promise<EmptyMessageBody> {
     return this.authService.authLogout(req);
   }
 
   @Authorize()
-  @Get('refresh-token')
+  @Get('refresh')
   @ApiTags('Auth', 'JWT')
   @HttpCode(HttpStatusCodes.CREATED)
   @Header('Content-Type', 'application/json')
@@ -92,5 +98,28 @@ export class AuthController {
   @Serialize(UserSessionLookupManyMessageBodySerialize)
   async getUserSessions(@Req() req: RequestAuthGuard): Promise<IUserSessionLookupManyMessageBody> {
     return this.authService.authUserSessions(req);
+  }
+
+  @Authorize()
+  @Get('user')
+  @ApiTags('Auth', 'JWT')
+  @HttpCode(HttpStatusCodes.OK)
+  @Header('Content-Type', 'application/json')
+  @ApiResponse({
+    description: 'User Info',
+    type: UserInfoMessageBodySerialize,
+  })
+  @Serialize(UserInfoMessageBodySerialize)
+  async getUserInfo(@Req() req: RequestAuthGuard): Promise<IUserInfoMessageBody> {
+    const messageBody = new MessageBody<IUserInfoData>(HttpStatusCodes.OK, 'Successfully retrieved user info');
+    const userInfoData = new UserInfoData(
+      req.user.fullname,
+      req.user.username,
+      req.user.email,
+      req.user.phone,
+      req.user.admin
+    );
+
+    return messageBody.setData(userInfoData) as IUserInfoMessageBody;
   }
 }

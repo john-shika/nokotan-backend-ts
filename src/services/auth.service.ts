@@ -14,7 +14,7 @@ import {
   extractTokenFromHeader,
   getIPAddress,
   getJwtTokenCreatedAt,
-  getJwtTokenExpiredAt,
+  getJwtTokenExpires,
   getUserAgent,
 } from '@/utils/common';
 import type { ILoginBodyForm } from '@/schemas/LoginFormBody';
@@ -64,7 +64,7 @@ export class AuthService {
     });
 
     const claimsJwtToken = this.jwtService.decode(jwtToken) as IClaimsJwtToken;
-    const expiredAt = getJwtTokenExpiredAt(claimsJwtToken);
+    const expiredAt = getJwtTokenExpires(claimsJwtToken);
     const createdAt = getJwtTokenCreatedAt(claimsJwtToken);
 
     // update empty session for insert new token
@@ -112,7 +112,7 @@ export class AuthService {
     });
 
     const claimsJwtToken = this.jwtService.decode(jwtToken) as IClaimsJwtToken;
-    const expiredAt = getJwtTokenExpiredAt(claimsJwtToken);
+    const expiredAt = getJwtTokenExpires(claimsJwtToken);
     const createdAt = getJwtTokenCreatedAt(claimsJwtToken);
 
     // update empty session for insert new token
@@ -154,27 +154,27 @@ export class AuthService {
     const user = req.user;
     const session = req.session;
 
-    const token_id = uuid.v7();
-    const sessionId = uuid.v7();
+    const tokenId = uuid.v7();
+    const sessionId = session.uuid;
 
     const payload: IClaimsJwtToken = {
-      jti: token_id,
+      jti: tokenId,
       sid: sessionId,
       username: user.username,
-      role: Roles.USER,
+      role: user.admin ? Roles.ADMIN : Roles.USER,
     };
     const jwtToken = await this.jwtService.signAsync(payload, {
       secret: jwtConstants.secretKey,
     });
 
     const claimsJwtToken = this.jwtService.decode(jwtToken) as IClaimsJwtToken;
-    const expiredAt = getJwtTokenExpiredAt(claimsJwtToken);
+    const expiredAt = getJwtTokenExpires(claimsJwtToken);
     const updatedAt = getJwtTokenCreatedAt(claimsJwtToken);
 
     await this.sessionService.updateSession({
       where: { id: session.id },
       data: {
-        new_token_id: token_id,
+        new_token_id: tokenId,
         expired_at: expiredAt,
         updated_at: updatedAt,
       },

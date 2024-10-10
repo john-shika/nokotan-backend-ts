@@ -60,6 +60,7 @@ export class UserSessionLookupData implements IUserSessionLookupData {
 }
 
 export class UserSessionLookupDataSerialize {
+
   @ApiProperty()
   @Expose({ name: 'session_id' })
   public readonly uuid: string;
@@ -102,6 +103,7 @@ export class UserSessionLookupDataSerialize {
 }
 
 export class UserSessionLookupManyMessageBodySerialize extends MessageBodySerialize<UserSessionLookupDataSerialize[]> {
+
   @ApiProperty({ type: [UserSessionLookupDataSerialize] })
   @Expose({ name: 'data' })
   @Type(() => UserSessionLookupDataSerialize)
