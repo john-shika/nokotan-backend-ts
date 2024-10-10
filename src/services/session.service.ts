@@ -25,11 +25,11 @@ export class SessionService {
     );
   }
 
-  async sessionByToken(token: string, userPreload: boolean = false): Promise<Nullable<Session>> {
+  async sessionByTokenId(token_id: string, userPreload: boolean = false): Promise<Nullable<Session>> {
     return (
       (await this.prisma.session.findFirst({
         where: {
-          OR: [{ token }, { new_token: token }],
+          OR: [{ token_id }, { new_token_id: token_id }],
           deleted_at: null,
         },
         include: {

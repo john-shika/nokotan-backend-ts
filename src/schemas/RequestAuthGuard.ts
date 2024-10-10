@@ -5,4 +5,5 @@ import type { Request } from 'express';
 export interface RequestAuthGuard extends Request {
   user: User;
   session: Session;
+  role: string;
 }

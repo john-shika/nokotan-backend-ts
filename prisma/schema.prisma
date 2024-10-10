@@ -30,8 +30,8 @@ model Session {
   uuid String @unique
 
   user_id    Int
-  token      String? @unique
-  new_token  String? @unique
+  token_id      String? @unique // using jti instead of storing the entire token
+  new_token_id  String? @unique // using jti instead of storing the entire token
   ip_addr    String
   user_agent String
   expired_at DateTime?

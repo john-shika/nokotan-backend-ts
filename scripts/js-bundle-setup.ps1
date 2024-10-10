@@ -13,3 +13,6 @@ if (-not (Test-Path -Path $directory)) {
 }
 
 Invoke-WebRequest -Uri $url -OutFile $outputFilePath
+
+Set-Location $currentWorkDir
+Set-Location ..

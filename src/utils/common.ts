@@ -169,9 +169,9 @@ export class DateTime extends Date {
   }
 }
 
-export function sessionIsOnline(session: Session, timeThresholdForOnlineCheck?: number): boolean {
+export function sessionIsOnline(session: Session, timeThresholdForOnlineCheck: number = 12): boolean {
   const currentTime = DateTime.UTCNow();
-  const expiredAt = DateTime.addSeconds(session.updated_at, timeThresholdForOnlineCheck ?? 12);
+  const expiredAt = DateTime.addSeconds(session.updated_at, timeThresholdForOnlineCheck);
   return session.deleted_at == null && DateTime.isAfter(expiredAt, currentTime);
 }
 
@@ -192,7 +192,7 @@ export function isNoneOrWhiteSpace(value?: string): boolean {
   return true;
 }
 
-export function IsNoneOrEmptyOrWhiteSpace(value?: string): boolean {
+export function isNoneOrEmptyOrWhiteSpace(value?: string): boolean {
   return isNoneOrEmpty(value) || isNoneOrWhiteSpace(value);
 }
 

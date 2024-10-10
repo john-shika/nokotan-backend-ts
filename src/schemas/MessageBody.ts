@@ -4,7 +4,7 @@ import { ApiProperty } from '@nestjs/swagger';
 import { Expose } from 'class-transformer';
 
 export interface IMessageBody<T extends any> {
-  status: HttpStatusText;
+  status: string;
   status_ok: boolean;
   status_code: HttpStatusCodes;
   message: string;
@@ -15,13 +15,13 @@ export interface IMessageBody<T extends any> {
 export function setStatusMessage<T extends any>(messageBody: IMessageBody<T>, code: HttpStatusCodes) {
   messageBody.status_ok = 200 <= code && code < 300;
   messageBody.status_code = code;
-  messageBody.status = HttpStatusText.from(code);
+  messageBody.status = HttpStatusText.fromCode(code);
 }
 
 export class MessageBody<T extends any> implements IMessageBody<T> {
   status_ok: boolean;
   status_code: HttpStatusCodes;
-  status: HttpStatusText;
+  status: string;
   message: string;
   timestamp: string;
   data?: T;
@@ -38,6 +38,10 @@ export class MessageBody<T extends any> implements IMessageBody<T> {
   }
 }
 
+export class EmptyMessageBody extends MessageBody<object> {
+  data = null;
+}
+
 export class MessageBodySerialize<T extends any> implements HttpMessageBody<T> {
   @ApiProperty()
   @Expose({ name: 'status_ok' })
@@ -49,7 +53,7 @@ export class MessageBodySerialize<T extends any> implements HttpMessageBody<T> {
 
   @ApiProperty()
   @Expose({ name: 'status' })
-  status: HttpStatusText;
+  status: string;
 
   @ApiProperty()
   @Expose({ name: 'message' })
@@ -63,5 +67,7 @@ export class MessageBodySerialize<T extends any> implements HttpMessageBody<T> {
   @Expose({ name: 'data' })
   data?: T;
 }
+
+export class EmptyMessageBodySerialize extends MessageBodySerialize<object> {}
 
 export default MessageBody;

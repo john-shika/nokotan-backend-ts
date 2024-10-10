@@ -1,9 +1,19 @@
-import { Injectable, Logger } from '@nestjs/common';
+import * as uuid from 'uuid';
+import { BadRequestException, Injectable, Logger } from '@nestjs/common';
 import { PrismaService } from './prisma.service';
 import { Prisma } from '@prisma/client';
-import { createLogger, getAttrToString, getDateISOString, getDateToday, Nullable } from '@/utils/common';
-import { User, Users } from '@/models/User';
-import { ILoginBodyForm } from '@/schemas/LoginFormBody';
+import {
+  createLogger,
+  DateTime,
+  getAttrToString,
+  getDateISOString,
+  getDateToday,
+  isNoneOrEmptyOrWhiteSpace,
+  Nullable,
+} from '@/utils/common';
+import type { User, Users } from '@/models/User';
+import type { ILoginBodyForm } from '@/schemas/LoginFormBody';
+import type { IRegisterBodyForm } from '@/schemas/RegisterFormBody';
 
 @Injectable()
 export class UserService {
@@ -38,6 +48,39 @@ export class UserService {
 
     const check = user && (await this.userPassEquals(user, password));
     return check ? user : null;
+  }
+
+  async userByRegisterBodyForm(body: IRegisterBodyForm): Promise<Nullable<User>> {
+    const fullname = getAttrToString(body, 'fullname');
+    const username = getAttrToString(body, 'username');
+    const password = getAttrToString(body, 'password');
+    const email = getAttrToString(body, 'email');
+    const phone = getAttrToString(body, 'phone');
+
+    if (isNoneOrEmptyOrWhiteSpace(fullname)) {
+      throw new BadRequestException("Fullname can't be empty");
+    }
+
+    if (isNoneOrEmptyOrWhiteSpace(username)) {
+      throw new BadRequestException("Username can't be empty");
+    }
+
+    if (isNoneOrEmptyOrWhiteSpace(password)) {
+      throw new BadRequestException("Password can't be empty");
+    }
+
+    return await this.createUser({
+      uuid: uuid.v7(),
+      fullname,
+      username,
+      password,
+      email,
+      phone,
+      admin: false,
+      created_at: DateTime.UTCNow(),
+      updated_at: DateTime.UTCNow(),
+      deleted_at: null,
+    });
   }
 
   async userById(id: number): Promise<Nullable<User>> {

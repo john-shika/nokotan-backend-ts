@@ -3,18 +3,13 @@ import { AuthService } from '@/services/auth.service';
 import { UserService } from '@/services/user.service';
 import { Authorize } from '@/decorators/authorize.decorator';
 import { AccessJwtTokenMessageBodySerialize, IAccessJwtTokenMessageBody } from '@/schemas/JwtToken';
-import { ApiResponse } from '@nestjs/swagger';
+import { ApiResponse, ApiTags } from '@nestjs/swagger';
 import HttpStatusCodes from '@/utils/net/http';
-import MessageBody from '@/schemas/MessageBody';
-import { Sessions } from '@/models/Session';
+import MessageBody, { EmptyMessageBody, MessageBodySerialize } from '@/schemas/MessageBody';
 import type { Request } from 'express';
 import type { ILoginBodyForm } from '@/schemas/LoginFormBody';
-import {
-  IUserSessionLookupManyMessageBody,
-  IUserSessionLookupDataMany,
-  UserSessionLookupManyMessageBodySerialize,
-} from '@/schemas/UserSessionLookup';
-import { getUserSessionLookup } from '@/utils/session';
+import type { IRegisterBodyForm } from '@/schemas/RegisterFormBody';
+import { IUserSessionLookupManyMessageBody, UserSessionLookupManyMessageBodySerialize } from '@/schemas/UserSessionLookupData';
 import { Serialize } from '@/decorators/serialize.decorator';
 import { createLogger } from '@/utils/common';
 import type { RequestAuthGuard } from '@/schemas/RequestAuthGuard';
@@ -24,14 +19,15 @@ export class AuthController {
   public readonly logger: Logger = createLogger(this);
 
   private readonly authService: AuthService;
-  private readonly usersService: UserService;
+  private readonly userService: UserService;
 
-  constructor(authService: AuthService, usersService: UserService) {
+  constructor(authService: AuthService, userService: UserService) {
     this.authService = authService;
-    this.usersService = usersService;
+    this.userService = userService;
   }
 
   @Post('login')
+  @ApiTags('Auth')
   @HttpCode(HttpStatusCodes.CREATED)
   @Header('Content-Type', 'application/json')
   @ApiResponse({
@@ -43,21 +39,36 @@ export class AuthController {
     return this.authService.authLogin(req, body);
   }
 
+  @Post('register')
+  @ApiTags('Auth')
+  @HttpCode(HttpStatusCodes.CREATED)
+  @Header('Content-Type', 'application/json')
+  @ApiResponse({
+    description: 'Register New Account',
+    type: AccessJwtTokenMessageBodySerialize,
+  })
+  @Serialize(AccessJwtTokenMessageBodySerialize)
+  async signUp(@Req() req: Request, @Body() body: IRegisterBodyForm): Promise<IAccessJwtTokenMessageBody> {
+    return this.authService.authRegister(req, body);
+  }
+
   @Authorize()
   @Post('logout')
+  @ApiTags('Auth', 'JWT')
   @HttpCode(HttpStatusCodes.OK)
   @Header('Content-Type', 'application/json')
   @ApiResponse({
     description: 'Logout Account',
-    type: MessageBody,
+    type: MessageBodySerialize,
   })
-  @Serialize(MessageBody)
-  async signOut(@Req() req: RequestAuthGuard): Promise<MessageBody<unknown>> {
+  @Serialize(MessageBodySerialize)
+  async signOut(@Req() req: RequestAuthGuard): Promise<EmptyMessageBody> {
     return this.authService.authLogout(req);
   }
 
   @Authorize()
   @Get('refresh-token')
+  @ApiTags('Auth', 'JWT')
   @HttpCode(HttpStatusCodes.CREATED)
   @Header('Content-Type', 'application/json')
   @ApiResponse({
@@ -70,7 +81,8 @@ export class AuthController {
   }
 
   @Authorize()
-  @Get('profile')
+  @Get('sessions')
+  @ApiTags('Auth', 'JWT')
   @HttpCode(HttpStatusCodes.OK)
   @Header('Content-Type', 'application/json')
   @ApiResponse({
@@ -79,34 +91,6 @@ export class AuthController {
   })
   @Serialize(UserSessionLookupManyMessageBodySerialize)
   async getUserSessions(@Req() req: RequestAuthGuard): Promise<IUserSessionLookupManyMessageBody> {
-    const user = req.user;
-    const session = req.session;
-
-    const messageBody = new MessageBody<IUserSessionLookupDataMany>(HttpStatusCodes.OK, 'User Profile Lookup');
-    const userSessionDataMany = [] as IUserSessionLookupDataMany;
-
-    // get all sessions of user by user_id from prisma client
-    const sessions = await (async (userId: number): Promise<Sessions> => {
-      const user = await this.usersService.userSessionsPreload({
-        id: userId,
-      });
-
-      if (!user) {
-        throw new InternalServerErrorException();
-      }
-
-      return user.sessions ?? [];
-    })(user.id);
-
-    // max tolerance 12 seconds for check online for session
-    const timeThresholdForOnlineCheck = 12;
-
-    for (const temp of sessions) {
-      const userSessionLookupData = getUserSessionLookup(temp, session.id, timeThresholdForOnlineCheck);
-
-      userSessionDataMany.push(userSessionLookupData);
-    }
-
-    return messageBody.setData(userSessionDataMany) as IUserSessionLookupManyMessageBody;
+    return this.authService.authUserSessions(req);
   }
 }

@@ -6,7 +6,8 @@ import { ValidateNested } from 'class-validator';
 export interface IUserSessionLookupData {
   session_id: string;
   used: boolean;
-  online: boolean;
+  // online: boolean;
+  admin: boolean;
   ip_addr: string;
   user_agent: string;
   expired_at: string;
@@ -24,7 +25,8 @@ export interface IUserSessionLookupManyMessageBody extends IMessageBody<IUserSes
 export class UserSessionLookupData implements IUserSessionLookupData {
   public readonly session_id: string;
   public readonly used: boolean;
-  public readonly online: boolean;
+  // public readonly online: boolean;
+  public readonly admin: boolean;
   public readonly ip_addr: string;
   public readonly user_agent: string;
   public readonly expired_at: string;
@@ -35,7 +37,8 @@ export class UserSessionLookupData implements IUserSessionLookupData {
   constructor(
     session_id: string,
     used: boolean,
-    online: boolean,
+    // online: boolean,
+    admin: boolean,
     ip_addr: string,
     user_agent: string,
     expired_at: string,
@@ -45,7 +48,8 @@ export class UserSessionLookupData implements IUserSessionLookupData {
   ) {
     this.session_id = session_id;
     this.used = used;
-    this.online = online;
+    // this.online = online;
+    this.admin = admin;
     this.ip_addr = ip_addr;
     this.user_agent = user_agent;
     this.expired_at = expired_at;
@@ -58,15 +62,19 @@ export class UserSessionLookupData implements IUserSessionLookupData {
 export class UserSessionLookupDataSerialize {
   @ApiProperty()
   @Expose({ name: 'session_id' })
-  public readonly sessionId: string;
+  public readonly uuid: string;
 
   @ApiProperty()
   @Expose({ name: 'used' })
   public readonly used: boolean;
 
+  // @ApiProperty()
+  // @Expose({ name: 'online' })
+  // public readonly online: boolean;
+
   @ApiProperty()
-  @Expose({ name: 'online' })
-  public readonly online: boolean;
+  @Expose({ name: 'admin' })
+  public readonly admin: boolean;
 
   @ApiProperty()
   @Expose({ name: 'ip_addr' })

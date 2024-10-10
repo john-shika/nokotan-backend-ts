@@ -1,4 +1,4 @@
-import { IsNoneOrEmptyOrWhiteSpace } from '@/utils/common';
+import { isNoneOrEmptyOrWhiteSpace } from '@/utils/common';
 
 export enum HttpStatusCodes {
   CONTINUE = 100,
@@ -134,7 +134,7 @@ export class HttpStatusText {
   public static NETWORK_AUTHENTICATION_REQUIRED: string = 'NETWORK_AUTHENTICATION_REQUIRED';
 
   public static ToUpperSnakeCase(value: string): string {
-    if (IsNoneOrEmptyOrWhiteSpace(value)) return '';
+    if (isNoneOrEmptyOrWhiteSpace(value)) return '';
     return value
       .trim()
       .replace(/(?<!^)(?=[A-Z])|[-_\s]+/g, '_')
@@ -142,7 +142,7 @@ export class HttpStatusText {
       .toUpperCase();
   }
 
-  public static getCode(statusText: string): HttpStatusCodes {
+  public static parseCode(statusText: string): HttpStatusCodes {
     const snakeCaseText = HttpStatusText.ToUpperSnakeCase(statusText);
     switch (snakeCaseText) {
       case HttpStatusText.CONTINUE:
@@ -278,7 +278,7 @@ export class HttpStatusText {
     }
   }
 
-  public static from(statusCode: HttpStatusCodes): string {
+  public static fromCode(statusCode: HttpStatusCodes): string {
     switch (statusCode) {
       case HttpStatusCodes.CONTINUE:
         return HttpStatusText.CONTINUE;
@@ -409,7 +409,7 @@ export class HttpStatusText {
       case HttpStatusCodes.NETWORK_AUTHENTICATION_REQUIRED:
         return HttpStatusText.NETWORK_AUTHENTICATION_REQUIRED;
       default:
-        throw new Error('Invalid status code');
+        throw new Error(`Invalid status code: ${statusCode}`);
     }
   }
 }
@@ -429,7 +429,7 @@ export interface HttpMessageBody<T extends any> extends HttpMessageStatus {
 export function setStatusMessage(messageBody: HttpMessageStatus, code: HttpStatusCodes) {
   messageBody.statusOk = 200 <= code && code < 300;
   messageBody.statusCode = code;
-  messageBody.status = HttpStatusText.from(code);
+  messageBody.status = HttpStatusText.fromCode(code);
 }
 
 export default HttpStatusCodes;

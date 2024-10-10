@@ -1,7 +1,7 @@
 import { Controller, Get, Header, HttpCode, Logger } from '@nestjs/common';
 import { AppService } from '@/services/app.service';
-import { MessageBody, MessageBodySerialize } from '@/schemas/MessageBody';
-import { ApiResponse } from '@nestjs/swagger';
+import { EmptyMessageBody, EmptyMessageBodySerialize } from '@/schemas/MessageBody';
+import { ApiResponse, ApiTags } from '@nestjs/swagger';
 import HttpStatusCodes from '@/utils/net/http';
 import { createLogger } from '@/utils/common';
 import { Serialize } from '@/decorators/serialize.decorator';
@@ -17,14 +17,15 @@ export class AppController {
   }
 
   @Get('/message')
+  @ApiTags('App', 'Anonymous')
   @HttpCode(HttpStatusCodes.OK)
   @Header('Content-Type', 'application/json')
   @ApiResponse({
     description: 'Get hello message',
-    type: MessageBodySerialize,
+    type: EmptyMessageBodySerialize,
   })
-  @Serialize(MessageBodySerialize)
-  async getMessage(): Promise<MessageBody<Record<string, any>>> {
+  @Serialize(EmptyMessageBodySerialize)
+  async getMessage(): Promise<EmptyMessageBody> {
     return this.appService.getMessage();
   }
 }

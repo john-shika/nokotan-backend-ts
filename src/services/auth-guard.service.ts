@@ -30,8 +30,8 @@ export class AuthGuard implements CanActivate {
   private readonly jwtService: JwtService;
   private readonly reflector: Reflector;
 
-  constructor(sessionsService: SessionService, jwtService: JwtService, reflector: Reflector) {
-    this.sessionService = sessionsService;
+  constructor(sessionService: SessionService, jwtService: JwtService, reflector: Reflector) {
+    this.sessionService = sessionService;
     this.jwtService = jwtService;
     this.reflector = reflector;
   }
@@ -60,17 +60,19 @@ export class AuthGuard implements CanActivate {
       const options = { secret: jwtConstants.secretKey };
       const payload = (await this.jwtService.verifyAsync(token, options)) as IClaimsJwtToken;
 
-      const sessionUUID = payload?.sub.trim() ?? '';
+      const token_id = payload?.jti.trim() ?? '';
+      const sessionId = payload?.sid.trim() ?? '';
       const username = payload?.username.trim() ?? '';
+      const role = payload?.role.trim() ?? '';
 
       (() => {
-        if (!sessionUUID) {
+        if (!token_id || !sessionId || !username || !role) {
           throw new UnauthorizedException();
         }
       })();
 
       const session = await this.sessionService.sessionUserPreload({
-        uuid: sessionUUID,
+        uuid: sessionId,
         deleted_at: null,
       });
 
@@ -82,29 +84,31 @@ export class AuthGuard implements CanActivate {
         }
       })();
 
-      let newToken = session.new_token;
+      let newTokenId = session.new_token_id;
 
       (() => {
-        if (session.token !== token && newToken !== token) {
+        if (session.token_id !== token_id && newTokenId !== token_id) {
           throw new UnauthorizedException();
         }
       })();
 
       // remove new token from session
-      if (newToken === token) newToken = null;
+      if (newTokenId === token_id) newTokenId = null;
 
       await (async () => {
+        if (newTokenId !== null) return;
+
         const updatedAt = new Date();
 
         // update session
         const session = await this.sessionService.updateSession({
           where: {
-            uuid: sessionUUID,
+            uuid: sessionId,
             deleted_at: null,
           },
           data: {
-            token: token, // replace new token if exists
-            new_token: newToken, // can be replaced by new token with refresh mode
+            token_id: token_id, // replace new token if exists
+            new_token_id: newTokenId, // can be replaced by new token with refresh mode
             updated_at: updatedAt, // auto update for check online
           },
         });
@@ -116,6 +120,7 @@ export class AuthGuard implements CanActivate {
         // make it request as RequestAuthGuard interface
         defineProperty(request, 'user', user);
         defineProperty(request, 'session', session);
+        defineProperty(request, 'role', role);
       })();
     } catch (e) {
       this.logger.error(`Error: ${e}`);
