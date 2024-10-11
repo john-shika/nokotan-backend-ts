@@ -1,7 +1,8 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Expose, Type } from 'class-transformer';
-import { IMessageBody, MessageBodySerialize } from '@/schemas/MessageBody';
+import { MessageBodySerialize } from '@/schemas/MessageBody';
 import { ValidateNested } from 'class-validator';
+import type { IMessageBody } from '@/schemas/MessageBody';
 
 export interface IClaimsJwtToken {
   username: string;
@@ -34,7 +35,7 @@ export class ClaimsJwtToken implements IClaimsJwtToken {
 }
 
 export interface IAccessJwtTokenData {
-  access_token: string;
+  accessToken: string;
 }
 
 export interface IAccessJwtTokenMessageBody extends IMessageBody<IAccessJwtTokenData> {
@@ -42,22 +43,20 @@ export interface IAccessJwtTokenMessageBody extends IMessageBody<IAccessJwtToken
 }
 
 export class AccessJwtTokenData implements IAccessJwtTokenData {
-  public readonly access_token: string;
+  public readonly accessToken: string;
 
   constructor(access_token: string) {
-    this.access_token = access_token;
+    this.accessToken = access_token;
   }
 }
 
 export class AccessJwtTokenDataSerialize {
-
   @ApiProperty()
-  @Expose({ name: 'access_token' })
+  @Expose({ name: 'accessToken' })
   public readonly accessToken: string;
 }
 
 export class AccessJwtTokenMessageBodySerialize extends MessageBodySerialize<AccessJwtTokenDataSerialize> {
-
   @ApiProperty({ type: AccessJwtTokenDataSerialize })
   @Expose({ name: 'data' })
   @Type(() => AccessJwtTokenDataSerialize)

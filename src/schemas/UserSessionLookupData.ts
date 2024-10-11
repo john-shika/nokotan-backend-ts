@@ -1,7 +1,8 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Expose, Type } from 'class-transformer';
-import { IMessageBody, MessageBodySerialize } from '@/schemas/MessageBody';
+import { MessageBodySerialize } from '@/schemas/MessageBody';
 import { ValidateNested } from 'class-validator';
+import type { IMessageBody } from '@/schemas/MessageBody';
 
 export interface IUserSessionLookupData {
   session_id: string;
@@ -60,7 +61,6 @@ export class UserSessionLookupData implements IUserSessionLookupData {
 }
 
 export class UserSessionLookupDataSerialize {
-
   @ApiProperty()
   @Expose({ name: 'session_id' })
   public readonly uuid: string;
@@ -103,7 +103,6 @@ export class UserSessionLookupDataSerialize {
 }
 
 export class UserSessionLookupManyMessageBodySerialize extends MessageBodySerialize<UserSessionLookupDataSerialize[]> {
-
   @ApiProperty({ type: [UserSessionLookupDataSerialize] })
   @Expose({ name: 'data' })
   @Type(() => UserSessionLookupDataSerialize)

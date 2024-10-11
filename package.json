@@ -12,12 +12,12 @@
     "start:dev": "nest start --watch",
     "start:debug": "nest start --debug --watch",
     "start:prod": "node dist/main",
-    "lint": "eslint \"{src,apps,libs,tests}/**/*.ts\" --fix",
-    "test": "jest --verbose",
-    "test:watch": "jest --watch --verbose",
-    "test:cov": "jest --coverage --verbose",
+    "lint": "eslint \"{src,apps,libs,tests}/**/*.{js,cjs,mjs,ts,cts,mts}\" --fix",
+    "test": "jest --runInBand --verbose",
+    "test:watch": "jest --watch --runInBand --verbose",
+    "test:cov": "jest --coverage --runInBand --verbose",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register ./node_modules/jest/bin/jest.js --runInBand --verbose",
-    "test:e2e": "jest --config ./jest-e2e.config.ts --verbose"
+    "test:e2e": "jest --config jest-e2e.config.cjs --runInBand --verbose"
   },
   "dependencies": {
     "@nestjs/common": "^10.4.4",

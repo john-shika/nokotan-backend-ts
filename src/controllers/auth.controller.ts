@@ -6,19 +6,16 @@ import { AccessJwtTokenMessageBodySerialize, IAccessJwtTokenMessageBody } from '
 import { ApiResponse, ApiTags } from '@nestjs/swagger';
 import HttpStatusCodes from '@/utils/net/http';
 import { EmptyMessageBody, EmptyMessageBodySerialize, MessageBody } from '@/schemas/MessageBody';
+import { UserSessionLookupManyMessageBodySerialize } from '@/schemas/UserSessionLookupData';
+import { UserInfoData, UserInfoMessageBodySerialize } from '@/schemas/UserInfoData';
+import { Serialize } from '@/decorators/serialize.decorator';
+import { createLogger } from '@/utils/common';
 import type { Request } from 'express';
 import type { ILoginBodyForm } from '@/schemas/LoginFormBody';
 import type { IRegisterBodyForm } from '@/schemas/RegisterFormBody';
-import { IUserSessionLookupManyMessageBody, UserSessionLookupManyMessageBodySerialize } from '@/schemas/UserSessionLookupData';
-import { Serialize } from '@/decorators/serialize.decorator';
-import { createLogger } from '@/utils/common';
+import type { IUserSessionLookupManyMessageBody } from '@/schemas/UserSessionLookupData';
 import type { RequestAuthGuard } from '@/schemas/RequestAuthGuard';
-import {
-  IUserInfoData,
-  IUserInfoMessageBody, UserInfoData,
-  UserInfoDataSerialize,
-  UserInfoMessageBodySerialize,
-} from '@/schemas/UserInfoData';
+import type { IUserInfoData, IUserInfoMessageBody } from '@/schemas/UserInfoData';
 
 @Controller('auth')
 export class AuthController {
@@ -59,7 +56,7 @@ export class AuthController {
   }
 
   @Authorize()
-  @Post('logout')
+  @Get('logout')
   @ApiTags('Auth', 'JWT')
   @HttpCode(HttpStatusCodes.OK)
   @Header('Content-Type', 'application/json')
@@ -112,13 +109,7 @@ export class AuthController {
   @Serialize(UserInfoMessageBodySerialize)
   async getUserInfo(@Req() req: RequestAuthGuard): Promise<IUserInfoMessageBody> {
     const messageBody = new MessageBody<IUserInfoData>(HttpStatusCodes.OK, 'Successfully retrieved user info');
-    const userInfoData = new UserInfoData(
-      req.user.fullname,
-      req.user.username,
-      req.user.email,
-      req.user.phone,
-      req.user.admin
-    );
+    const userInfoData = new UserInfoData(req.user.fullname, req.user.username, req.user.email, req.user.phone, req.user.admin);
 
     return messageBody.setData(userInfoData) as IUserInfoMessageBody;
   }

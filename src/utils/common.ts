@@ -14,7 +14,7 @@ export class OptionIsNoneError extends Error {
 
 export const None = null;
 
-export class OptCond {
+export class OptionalCondition {
   static None<T extends any>(opt: Optional<T>): boolean {
     return opt === null || opt === undefined;
   }
@@ -24,7 +24,7 @@ export class OptCond {
   }
 
   static Some<T extends any>(opt: Optional<T>): T {
-    if (OptCond.None(opt)) throw new OptionIsNoneError();
+    if (OptionalCondition.None(opt)) throw new OptionIsNoneError();
     return opt;
   }
 }
@@ -180,11 +180,11 @@ export function getAttrToString(obj: object, name: string): string {
 }
 
 export function isNoneOrEmpty(value?: string): boolean {
-  return OptCond.None(value) || value?.length === 0;
+  return OptionalCondition.None(value) || value?.length === 0;
 }
 
 export function isNoneOrWhiteSpace(value?: string): boolean {
-  if (OptCond.None(value)) return true;
+  if (OptionalCondition.None(value)) return true;
   for (const c of value) {
     if (c === ' ' || c === '\t' || c === '\n' || c === '\r') continue;
     return false;

@@ -1,8 +1,9 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Expose, Type } from 'class-transformer';
-import { IMessageBody, MessageBodySerialize } from '@/schemas/MessageBody';
+import { MessageBodySerialize } from '@/schemas/MessageBody';
 import { ValidateNested } from 'class-validator';
 import type { Nullable } from '@/utils/common';
+import type { IMessageBody } from '@/schemas/MessageBody';
 
 export interface IUserInfoData {
   fullname: Nullable<string>;
@@ -23,13 +24,7 @@ export class UserInfoData implements IUserInfoData {
   public readonly phone: Nullable<string>;
   public readonly admin: boolean;
 
-  constructor(
-    fullname: Nullable<string>,
-    username: string,
-    email: Nullable<string>,
-    phone: Nullable<string>,
-    admin: boolean
-  ) {
+  constructor(fullname: Nullable<string>, username: string, email: Nullable<string>, phone: Nullable<string>, admin: boolean) {
     this.fullname = fullname;
     this.username = username;
     this.email = email;
@@ -39,30 +34,28 @@ export class UserInfoData implements IUserInfoData {
 }
 
 export class UserInfoDataSerialize {
-
   @ApiProperty()
-  @Expose({ name: "fullname" })
+  @Expose({ name: 'fullname' })
   public readonly fullname: Nullable<string>;
 
   @ApiProperty()
-  @Expose({ name: "username" })
+  @Expose({ name: 'username' })
   public readonly username: string;
 
   @ApiProperty()
-  @Expose({ name: "email" })
+  @Expose({ name: 'email' })
   public readonly email: Nullable<string>;
 
   @ApiProperty()
-  @Expose({ name: "phone" })
+  @Expose({ name: 'phone' })
   public readonly phone: Nullable<string>;
 
   @ApiProperty()
-  @Expose({ name: "admin" })
+  @Expose({ name: 'admin' })
   public readonly admin: boolean;
 }
 
 export class UserInfoMessageBodySerialize extends MessageBodySerialize<UserInfoDataSerialize> {
-
   @ApiProperty({ type: [UserInfoDataSerialize] })
   @Expose({ name: 'data' })
   @Type(() => UserInfoDataSerialize)

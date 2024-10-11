@@ -1,26 +1,29 @@
 import { getDateISOString } from '@/utils/common';
-import HttpStatusCodes, { HttpMessageBody, HttpStatusText } from '@/utils/net/http';
+import HttpStatusCodes, { HttpStatusText } from '@/utils/net/http';
 import { ApiProperty } from '@nestjs/swagger';
 import { Expose } from 'class-transformer';
 
-export interface IMessageBody<T extends any> {
-  status: string;
-  status_ok: boolean;
-  status_code: HttpStatusCodes;
+export interface IMessageStatus {
+  status: HttpStatusText;
+  statusCode: HttpStatusCodes;
+  statusOk: boolean;
+}
+
+export interface IMessageBody<T extends any> extends IMessageStatus {
   message: string;
   timestamp: string;
   data?: T;
 }
 
-export function setStatusMessage<T extends any>(messageBody: IMessageBody<T>, code: HttpStatusCodes) {
-  messageBody.status_ok = 200 <= code && code < 300;
-  messageBody.status_code = code;
+export function setStatusMessage(messageBody: IMessageStatus, code: HttpStatusCodes) {
+  messageBody.statusOk = 200 <= code && code < 300;
+  messageBody.statusCode = code;
   messageBody.status = HttpStatusText.fromCode(code);
 }
 
 export class MessageBody<T extends any> implements IMessageBody<T> {
-  status_ok: boolean;
-  status_code: HttpStatusCodes;
+  statusOk: boolean;
+  statusCode: HttpStatusCodes;
   status: string;
   message: string;
   timestamp: string;
@@ -42,14 +45,13 @@ export class EmptyMessageBody extends MessageBody<object> {
   data = null;
 }
 
-export class MessageBodySerialize<T extends any> implements HttpMessageBody<T> {
-
+export class MessageBodySerialize<T extends any> implements IMessageBody<T> {
   @ApiProperty()
-  @Expose({ name: 'status_ok' })
+  @Expose({ name: 'statusOk' })
   statusOk: boolean;
 
   @ApiProperty()
-  @Expose({ name: 'status_code' })
+  @Expose({ name: 'statusCode' })
   statusCode: HttpStatusCodes;
 
   @ApiProperty()

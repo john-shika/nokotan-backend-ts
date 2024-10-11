@@ -85,8 +85,8 @@ export class AuthGuard implements CanActivate {
         }
       })();
 
-      let sessionTokenId = session.token_id;
-      let sessionNewTokenId = session.new_token_id;
+      const sessionTokenId = session.token_id;
+      const sessionNewTokenId = session.new_token_id;
 
       (() => {
         if (sessionTokenId !== tokenId && sessionNewTokenId !== tokenId) {

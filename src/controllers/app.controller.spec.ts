@@ -17,7 +17,7 @@ describe('AppController', () => {
   describe('root', () => {
     it('should return "Hello World!"', async () => {
       const resJson = await appController.getMessage();
-      expect(resJson.data?.message).toBe('Hello World!');
+      expect(resJson.data?.message).toBe('Hello, World!');
     });
   });
 });

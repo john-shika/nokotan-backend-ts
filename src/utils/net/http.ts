@@ -414,22 +414,4 @@ export class HttpStatusText {
   }
 }
 
-export interface HttpMessageStatus {
-  status: HttpStatusText;
-  statusCode: HttpStatusCodes;
-  statusOk: boolean;
-}
-
-export interface HttpMessageBody<T extends any> extends HttpMessageStatus {
-  message: string;
-  timestamp: string;
-  data?: T;
-}
-
-export function setStatusMessage(messageBody: HttpMessageStatus, code: HttpStatusCodes) {
-  messageBody.statusOk = 200 <= code && code < 300;
-  messageBody.statusCode = code;
-  messageBody.status = HttpStatusText.fromCode(code);
-}
-
 export default HttpStatusCodes;

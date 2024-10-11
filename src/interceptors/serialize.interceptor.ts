@@ -10,7 +10,7 @@ export class SerializeInterceptor<T extends any> implements NestInterceptor<T, a
 
   constructor(private dto: ClassConstructor<T>) {}
 
-  static provide(): ClassProvider<any> {
+  static provider(): ClassProvider {
     return createServiceProvider(APP_INTERCEPTOR, SerializeInterceptor);
   }
 

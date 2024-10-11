@@ -9,6 +9,7 @@
 - OpenAPI with Scalar UI [localhost:3000/api/scalar](http://localhost:3000/api/scalar)
 - OpenAPI with YAML format [localhost:3000/api/v1/openapi.yaml](http://localhost:3000/api/v1/openapi.yaml)
 - OpenAPI with JSON format [localhost:3000/api/v1/openapi.json](http://localhost:3000/api/v1/openapi.json)
+
 ## Project setup
 
 ```shell
