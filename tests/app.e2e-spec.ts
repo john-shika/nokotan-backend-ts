@@ -2,7 +2,7 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { INestApplication } from '@nestjs/common';
 import * as request from 'supertest';
 import { AppModule } from '@/modules/app.module';
-import { HttpStatusCodes } from '@/utils/net/http';
+import { HttpStatusCode } from '@/utils/net/http';
 
 describe('AppController (e2e)', () => {
   let app: INestApplication;
@@ -18,6 +18,6 @@ describe('AppController (e2e)', () => {
   });
 
   it('/message (GET)', async () => {
-    return request(app.getHttpServer()).get('/message').expect(HttpStatusCodes.OK);
+    return request(app.getHttpServer()).get('/message').expect(HttpStatusCode.OK);
   });
 });

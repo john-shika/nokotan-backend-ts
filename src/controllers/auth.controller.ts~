@@ -4,7 +4,7 @@ import { UserService } from '@/services/user.service';
 import { Authorize } from '@/decorators/authorize.decorator';
 import { AccessJwtTokenMessageBodySerialize, IAccessJwtTokenMessageBody } from '@/schemas/JwtToken';
 import { ApiResponse, ApiTags } from '@nestjs/swagger';
-import HttpStatusCode from '@/utils/net/http';
+import HttpStatusCodes from '@/utils/net/http';
 import { EmptyMessageBody, EmptyMessageBodySerialize, MessageBody } from '@/schemas/MessageBody';
 import { UserSessionLookupManyMessageBodySerialize } from '@/schemas/UserSessionLookupData';
 import { UserInfoData, UserInfoMessageBodySerialize } from '@/schemas/UserInfoData';
@@ -31,7 +31,7 @@ export class AuthController {
 
   @Post('login')
   @ApiTags('Auth')
-  @HttpCode(HttpStatusCode.CREATED)
+  @HttpCode(HttpStatusCodes.CREATED)
   @Header('Content-Type', 'application/json')
   @ApiResponse({
     description: 'Login Account',
@@ -44,7 +44,7 @@ export class AuthController {
 
   @Post('register')
   @ApiTags('Auth')
-  @HttpCode(HttpStatusCode.CREATED)
+  @HttpCode(HttpStatusCodes.CREATED)
   @Header('Content-Type', 'application/json')
   @ApiResponse({
     description: 'Register New Account',
@@ -58,7 +58,7 @@ export class AuthController {
   @Authorize()
   @Get('logout')
   @ApiTags('Auth', 'JWT')
-  @HttpCode(HttpStatusCode.OK)
+  @HttpCode(HttpStatusCodes.OK)
   @Header('Content-Type', 'application/json')
   @ApiResponse({
     description: 'Logout Account',
@@ -72,7 +72,7 @@ export class AuthController {
   @Authorize()
   @Get('refresh')
   @ApiTags('Auth', 'JWT')
-  @HttpCode(HttpStatusCode.CREATED)
+  @HttpCode(HttpStatusCodes.CREATED)
   @Header('Content-Type', 'application/json')
   @ApiResponse({
     description: 'Refresh Token',
@@ -86,7 +86,7 @@ export class AuthController {
   @Authorize()
   @Get('sessions')
   @ApiTags('Auth', 'JWT')
-  @HttpCode(HttpStatusCode.OK)
+  @HttpCode(HttpStatusCodes.OK)
   @Header('Content-Type', 'application/json')
   @ApiResponse({
     description: 'User Session Lookup Many',
@@ -100,7 +100,7 @@ export class AuthController {
   @Authorize()
   @Get('user')
   @ApiTags('Auth', 'JWT')
-  @HttpCode(HttpStatusCode.OK)
+  @HttpCode(HttpStatusCodes.OK)
   @Header('Content-Type', 'application/json')
   @ApiResponse({
     description: 'User Info',
@@ -108,7 +108,7 @@ export class AuthController {
   })
   @Serialize(UserInfoMessageBodySerialize)
   async getUserInfo(@Req() req: RequestAuthGuard): Promise<IUserInfoMessageBody> {
-    const messageBody = new MessageBody<IUserInfoData>(HttpStatusCode.OK, 'Successfully retrieved user info');
+    const messageBody = new MessageBody<IUserInfoData>(HttpStatusCodes.OK, 'Successfully retrieved user info');
     const userInfoData = new UserInfoData(req.user.fullname, req.user.username, req.user.email, req.user.phone, req.user.admin);
 
     return messageBody.setData(userInfoData) as IUserInfoMessageBody;

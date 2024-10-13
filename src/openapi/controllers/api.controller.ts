@@ -1,7 +1,7 @@
 import * as yaml from 'yaml';
 import { Controller, Get, Header, HttpCode, Logger } from '@nestjs/common';
 import { ApiResponse } from '@nestjs/swagger';
-import HttpStatusCodes from '@/utils/net/http';
+import HttpStatusCode from '@/utils/net/http';
 import { createLogger } from '@/utils/common';
 import { ApiService } from '@/openapi/services/api.service';
 import { ScalarOptions } from '@/openapi/schemas/ScalarOptions';
@@ -19,7 +19,7 @@ export class ApiController {
 
   @Testing()
   @Get('/api/v1/openapi.json')
-  @HttpCode(HttpStatusCodes.OK)
+  @HttpCode(HttpStatusCode.OK)
   @Header('Content-Type', 'application/json')
   @ApiResponse({
     description: 'Get Open API Reference JSON',
@@ -37,7 +37,7 @@ export class ApiController {
 
   @Testing()
   @Get('/api/v1/openapi.yaml')
-  @HttpCode(HttpStatusCodes.OK)
+  @HttpCode(HttpStatusCode.OK)
   @Header('Content-Type', 'text/yaml')
   @ApiResponse({
     description: 'Get Open API Reference YAML',
@@ -55,7 +55,7 @@ export class ApiController {
 
   @Testing()
   @Get('/api/scalar')
-  @HttpCode(HttpStatusCodes.OK)
+  @HttpCode(HttpStatusCode.OK)
   @Header('Content-Type', 'text/html')
   @ApiResponse({
     description: 'Get Scalar API Reference',

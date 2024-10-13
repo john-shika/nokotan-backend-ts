@@ -2,7 +2,7 @@ import { Controller, Get, Header, HttpCode, Logger } from '@nestjs/common';
 import { AppService } from '@/services/app.service';
 import { EmptyMessageBody, EmptyMessageBodySerialize } from '@/schemas/MessageBody';
 import { ApiResponse, ApiTags } from '@nestjs/swagger';
-import HttpStatusCodes from '@/utils/net/http';
+import HttpStatusCode from '@/utils/net/http';
 import { createLogger } from '@/utils/common';
 import { Serialize } from '@/decorators/serialize.decorator';
 
@@ -18,7 +18,7 @@ export class AppController {
 
   @Get('/message')
   @ApiTags('App', 'Anonymous')
-  @HttpCode(HttpStatusCodes.OK)
+  @HttpCode(HttpStatusCode.OK)
   @Header('Content-Type', 'application/json')
   @ApiResponse({
     description: 'Get hello message',

@@ -3,7 +3,7 @@ import { Injectable, InternalServerErrorException, Logger, Req, UnauthorizedExce
 import { UserService } from '@/services/user.service';
 import { JwtService } from '@nestjs/jwt';
 import { jwtConstants } from '@/globals/constants';
-import HttpStatusCodes from '@/utils/net/http';
+import HttpStatusCode from '@/utils/net/http';
 import MessageBody, { EmptyMessageBody } from '@/schemas/MessageBody';
 import { AccessJwtTokenData } from '@/schemas/JwtToken';
 import type { IAccessJwtTokenMessageBody, IClaimsJwtToken } from '@/schemas/JwtToken';
@@ -82,7 +82,7 @@ export class AuthService {
       updated_at: createdAt,
     });
 
-    const messageBody = new MessageBody(HttpStatusCodes.CREATED, 'Created JWT token successfully');
+    const messageBody = new MessageBody(HttpStatusCode.CREATED, 'Created JWT token successfully');
     const accessJwtToken = new AccessJwtTokenData(jwtToken);
 
     return messageBody.setData(accessJwtToken) as IAccessJwtTokenMessageBody;
@@ -130,7 +130,7 @@ export class AuthService {
       updated_at: createdAt,
     });
 
-    const messageBody = new MessageBody(HttpStatusCodes.CREATED, 'Created JWT token successfully');
+    const messageBody = new MessageBody(HttpStatusCode.CREATED, 'Created JWT token successfully');
     const accessJwtToken = new AccessJwtTokenData(jwtToken);
 
     return messageBody.setData(accessJwtToken) as IAccessJwtTokenMessageBody;
@@ -147,7 +147,7 @@ export class AuthService {
 
     await this.sessionService.removeSessionById(session.id);
 
-    return new EmptyMessageBody(HttpStatusCodes.OK, 'Logged out successfully');
+    return new EmptyMessageBody(HttpStatusCode.OK, 'Logged out successfully');
   }
 
   async authRefreshToken(@Req() req: RequestAuthGuard): Promise<IAccessJwtTokenMessageBody> {
@@ -180,7 +180,7 @@ export class AuthService {
       },
     });
 
-    const messageBody = new MessageBody(HttpStatusCodes.CREATED, 'Created Refresh JWT token successfully');
+    const messageBody = new MessageBody(HttpStatusCode.CREATED, 'Created Refresh JWT token successfully');
     const accessJwtToken = new AccessJwtTokenData(jwtToken);
 
     return messageBody.setData(accessJwtToken) as IAccessJwtTokenMessageBody;
@@ -190,7 +190,7 @@ export class AuthService {
     const user = req.user;
     const session = req.session;
 
-    const messageBody = new MessageBody<IUserSessionLookupDataMany>(HttpStatusCodes.OK, 'User Session Lookup');
+    const messageBody = new MessageBody<IUserSessionLookupDataMany>(HttpStatusCode.OK, 'User Session Lookup');
     const userSessionDataMany = [] as IUserSessionLookupDataMany;
 
     // get all sessions of user by user_id from prisma client

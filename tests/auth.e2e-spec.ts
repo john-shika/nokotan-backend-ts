@@ -1,7 +1,7 @@
 import * as request from 'supertest';
 import { Test, TestingModule } from '@nestjs/testing';
 import { AppModule } from '@/modules/app.module';
-import { HttpStatusCodes } from '@/utils/net/http';
+import { HttpStatusCode } from '@/utils/net/http';
 import type { Nullable } from '@/utils/common';
 import type { INestApplication } from '@nestjs/common';
 import type { IAccessJwtTokenMessageBody } from '@/schemas/JwtToken';
@@ -32,7 +32,7 @@ describe('AuthController (e2e)', () => {
       username: 'admin',
       password: 'Admin@1234',
     };
-    const response = await request(httpServer).post('/auth/login').send(dataReqBodyForm).expect(HttpStatusCodes.CREATED);
+    const response = await request(httpServer).post('/auth/login').send(dataReqBodyForm).expect(HttpStatusCode.CREATED);
 
     const dataResBodyJson = response.body as IAccessJwtTokenMessageBody;
     accessToken = dataResBodyJson.data.accessToken;
@@ -44,7 +44,7 @@ describe('AuthController (e2e)', () => {
     const response = await request(httpServer)
       .get('/auth/sessions')
       .set('Authorization', `Bearer ${accessToken}`)
-      .expect(HttpStatusCodes.OK);
+      .expect(HttpStatusCode.OK);
 
     const dataResBodyJson = response.body as IUserSessionLookupManyMessageBody;
     const sessions = dataResBodyJson.data;
@@ -53,7 +53,7 @@ describe('AuthController (e2e)', () => {
   });
 
   it('/auth/user (GET, ACCESS TOKEN)', async () => {
-    const response = await request(httpServer).get('/auth/user').set('Authorization', `Bearer ${accessToken}`).expect(HttpStatusCodes.OK);
+    const response = await request(httpServer).get('/auth/user').set('Authorization', `Bearer ${accessToken}`).expect(HttpStatusCode.OK);
 
     const dataResBodyJson = response.body as IUserInfoMessageBody;
     const user = dataResBodyJson.data;
@@ -66,7 +66,7 @@ describe('AuthController (e2e)', () => {
     const response = await request(httpServer)
       .get('/auth/refresh')
       .set('Authorization', `Bearer ${accessToken}`)
-      .expect(HttpStatusCodes.CREATED);
+      .expect(HttpStatusCode.CREATED);
 
     const dataResBodyJson = response.body as IAccessJwtTokenMessageBody;
     accessNewToken = dataResBodyJson.data.accessToken;
@@ -78,7 +78,7 @@ describe('AuthController (e2e)', () => {
     const response = await request(httpServer)
       .get('/auth/user')
       .set('Authorization', `Bearer ${accessNewToken}`)
-      .expect(HttpStatusCodes.OK);
+      .expect(HttpStatusCode.OK);
 
     const dataResBodyJson = response.body as IUserInfoMessageBody;
     const user = dataResBodyJson.data;
@@ -91,21 +91,21 @@ describe('AuthController (e2e)', () => {
     const response = await request(httpServer)
       .get('/auth/user')
       .set('Authorization', `Bearer ${accessToken}`)
-      .expect(HttpStatusCodes.UNAUTHORIZED);
+      .expect(HttpStatusCode.UNAUTHORIZED);
 
     const dataResBodyJson = response.body as IMessageBody<any>;
     const statusOk = dataResBodyJson.statusOk;
     const statusCode = dataResBodyJson.statusCode;
 
     expect(statusOk).toBeFalsy();
-    expect(statusCode).toBe(HttpStatusCodes.UNAUTHORIZED);
+    expect(statusCode).toBe(HttpStatusCode.UNAUTHORIZED);
   });
 
   it('/auth/logout (GET, NEW ACCESS TOKEN)', async () => {
     const response = await request(httpServer)
       .get('/auth/logout')
       .set('Authorization', `Bearer ${accessNewToken}`)
-      .expect(HttpStatusCodes.OK);
+      .expect(HttpStatusCode.OK);
 
     const dataResBodyJson = response.body as IMessageBody<any>;
     const message = dataResBodyJson.message;
