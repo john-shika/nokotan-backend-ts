@@ -63,7 +63,7 @@ export class AuthGuard implements CanActivate {
 
       const tokenId = payload?.jti.trim() ?? '';
       const sessionId = payload?.sid.trim() ?? '';
-      const username = payload?.username.trim() ?? '';
+      const username = payload?.user.trim() ?? '';
       const role = payload?.role.trim() ?? '';
 
       (() => {
@@ -86,7 +86,7 @@ export class AuthGuard implements CanActivate {
       })();
 
       const sessionTokenId = session.token_id;
-      const sessionNewTokenId = session.new_token_id;
+      const sessionNewTokenId = session.refresh_token_id;
 
       (() => {
         if (sessionTokenId !== tokenId && sessionNewTokenId !== tokenId) {

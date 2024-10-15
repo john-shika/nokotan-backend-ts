@@ -1,10 +1,10 @@
-import { OptionalCondition, Optional } from '@/utils/common';
+import { OptionalConditionOperator, Optional } from '@/utils/common';
 
 describe('Optional (e2e)', () => {
   it('/number (OPTIONAL)', async () => {
     let temp: Optional<number> = null;
 
-    if (OptionalCondition.None(temp)) {
+    if (OptionalConditionOperator.None(temp)) {
       expect(temp).toBeNull();
     } else {
       fail();
@@ -12,8 +12,8 @@ describe('Optional (e2e)', () => {
 
     temp = 12;
 
-    if (OptionalCondition.Ok(temp)) {
-      const num: number = OptionalCondition.Some(temp);
+    if (OptionalConditionOperator.Ok(temp)) {
+      const num: number = OptionalConditionOperator.Some(temp);
       expect(num).toBeDefined();
     } else {
       fail();

@@ -5,7 +5,7 @@ import { User } from '@prisma/client';
 export interface Session extends Model {
   user_id: number;
   token_id: Nullable<string>;
-  new_token_id: Nullable<string>;
+  refresh_token_id: Nullable<string>;
   ip_addr: string;
   user_agent: string;
   expired_at: Nullable<Date>;
@@ -21,7 +21,7 @@ export class $model extends BaseModel.$model implements Session {
 
   public readonly user_id: number;
   public readonly token_id: string;
-  public readonly new_token_id: Nullable<string>;
+  public readonly refresh_token_id: Nullable<string>;
   public readonly ip_addr: string;
   public readonly user_agent: string;
   public readonly expired_at: Nullable<Date>;
@@ -31,7 +31,7 @@ export class $model extends BaseModel.$model implements Session {
     uuid: string,
     user_id: number,
     token_id: string,
-    new_token_id: Nullable<string>,
+    refresh_token_id: Nullable<string>,
     ip_addr: string,
     user_agent: string,
     expired_at: Nullable<Date>,
@@ -42,7 +42,7 @@ export class $model extends BaseModel.$model implements Session {
     super(id, uuid, created_at, updated_at, deleted_at);
     this.user_id = user_id;
     this.token_id = token_id;
-    this.new_token_id = new_token_id;
+    this.refresh_token_id = refresh_token_id;
     this.ip_addr = ip_addr;
     this.user_agent = user_agent;
     this.expired_at = expired_at;
@@ -54,7 +54,7 @@ export function createSession(
   uuid: string,
   user_id: number,
   token_id: string,
-  new_token_id: Nullable<string>,
+  refresh_token_id: Nullable<string>,
   ip_addr: string,
   user_agent: string,
   expired_at: Nullable<Date>,
@@ -62,7 +62,7 @@ export function createSession(
   updated_at: Date,
   deleted_at: Nullable<Date>
 ): Session {
-  return new $model(id, uuid, user_id, token_id, new_token_id, ip_addr, user_agent, expired_at, created_at, updated_at, deleted_at);
+  return new $model(id, uuid, user_id, token_id, refresh_token_id, ip_addr, user_agent, expired_at, created_at, updated_at, deleted_at);
 }
 
 export default {

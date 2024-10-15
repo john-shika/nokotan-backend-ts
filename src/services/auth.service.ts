@@ -56,9 +56,10 @@ export class AuthService {
     const payload: IClaimsJwtToken = {
       jti: token_id,
       sid: sessionId,
-      username: user.username,
+      user: user.username,
       role: user.admin ? Roles.ADMIN : Roles.USER,
     };
+
     const jwtToken = await this.jwtService.signAsync(payload, {
       secret: jwtConstants.secretKey,
     });
@@ -104,9 +105,10 @@ export class AuthService {
     const payload: IClaimsJwtToken = {
       jti: token_id,
       sid: sessionId,
-      username: user.username,
+      user: user.username,
       role: Roles.USER,
     };
+
     const jwtToken = await this.jwtService.signAsync(payload, {
       secret: jwtConstants.secretKey,
     });
@@ -160,9 +162,10 @@ export class AuthService {
     const payload: IClaimsJwtToken = {
       jti: tokenId,
       sid: sessionId,
-      username: user.username,
+      user: user.username,
       role: user.admin ? Roles.ADMIN : Roles.USER,
     };
+
     const jwtToken = await this.jwtService.signAsync(payload, {
       secret: jwtConstants.secretKey,
     });

@@ -8,7 +8,7 @@ import {
   getAttrToString,
   getDateISOString,
   getDateToday,
-  isNoneOrEmptyOrWhiteSpace,
+  isNoneOrEmptyWhiteSpace,
   Nullable,
 } from '@/utils/common';
 import type { User, Users } from '@/models/User';
@@ -57,15 +57,15 @@ export class UserService {
     const email = getAttrToString(body, 'email');
     const phone = getAttrToString(body, 'phone');
 
-    if (isNoneOrEmptyOrWhiteSpace(fullname)) {
+    if (isNoneOrEmptyWhiteSpace(fullname)) {
       throw new BadRequestException("Fullname can't be empty");
     }
 
-    if (isNoneOrEmptyOrWhiteSpace(username)) {
+    if (isNoneOrEmptyWhiteSpace(username)) {
       throw new BadRequestException("Username can't be empty");
     }
 
-    if (isNoneOrEmptyOrWhiteSpace(password)) {
+    if (isNoneOrEmptyWhiteSpace(password)) {
       throw new BadRequestException("Password can't be empty");
     }
 
@@ -77,8 +77,8 @@ export class UserService {
       email,
       phone,
       admin: false,
-      created_at: DateTime.UTCNow(),
-      updated_at: DateTime.UTCNow(),
+      created_at: DateTime.getUtcNow(),
+      updated_at: DateTime.getUtcNow(),
       deleted_at: null,
     });
   }

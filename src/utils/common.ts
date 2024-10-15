@@ -14,7 +14,7 @@ export class OptionIsNoneError extends Error {
 
 export const None = null;
 
-export class OptionalCondition {
+export class OptionalConditionOperator {
   static None<T extends any>(opt: Optional<T>): boolean {
     return opt === null || opt === undefined;
   }
@@ -24,7 +24,7 @@ export class OptionalCondition {
   }
 
   static Some<T extends any>(opt: Optional<T>): T {
-    if (OptionalCondition.None(opt)) throw new OptionIsNoneError();
+    if (OptionalConditionOperator.None(opt)) throw new OptionIsNoneError();
     return opt;
   }
 }
@@ -129,10 +129,10 @@ export function getJwtTokenCreatedAt(claimsJwtToken: IClaimsJwtToken): Date {
 
 export class DateTime extends Date {
   constructor(val?: DateTime | Date | string | number) {
-    super(val ?? DateTime.UTCNow());
+    super(val ?? DateTime.getUtcNow());
   }
 
-  static UTCNow(): DateTime {
+  static getUtcNow(): DateTime {
     return new Date();
   }
 
@@ -164,13 +164,13 @@ export class DateTime extends Date {
     return date.getTime() < other.getTime();
   }
 
-  static Equals(date: DateTime | Date, other: DateTime | Date): boolean {
+  static equals(date: DateTime | Date, other: DateTime | Date): boolean {
     return date.getTime() === other.getTime();
   }
 }
 
 export function sessionIsOnline(session: Session, timeThresholdForOnlineCheck: number = 12): boolean {
-  const currentTime = DateTime.UTCNow();
+  const currentTime = DateTime.getUtcNow();
   const expiredAt = DateTime.addSeconds(session.updated_at, timeThresholdForOnlineCheck);
   return session.deleted_at == null && DateTime.isAfter(expiredAt, currentTime);
 }
@@ -180,20 +180,19 @@ export function getAttrToString(obj: object, name: string): string {
 }
 
 export function isNoneOrEmpty(value?: string): boolean {
-  return OptionalCondition.None(value) || value?.length === 0;
+  return OptionalConditionOperator.None(value) || value?.length === 0;
 }
 
-export function isNoneOrWhiteSpace(value?: string): boolean {
-  if (OptionalCondition.None(value)) return true;
-  for (const c of value) {
-    if (c === ' ' || c === '\t' || c === '\n' || c === '\r') continue;
-    return false;
-  }
-  return true;
-}
-
-export function isNoneOrEmptyOrWhiteSpace(value?: string): boolean {
-  return isNoneOrEmpty(value) || isNoneOrWhiteSpace(value);
+export function isNoneOrEmptyWhiteSpace(value?: string): boolean {
+  if (isNoneOrEmpty(value)) return true;
+  let temp = value!.trim();
+  return temp === ""
+    || temp === "\0"
+    || temp === "\xA0"
+    || temp === "\t"
+    || temp === "\r"
+    || temp === "\n"
+    || temp === "\r\n";
 }
 
 export function getDateToday(): Date {

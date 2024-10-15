@@ -1,4 +1,4 @@
-import { isNoneOrEmptyOrWhiteSpace } from '@/utils/common';
+import { isNoneOrEmptyWhiteSpace } from '@/utils/common';
 
 export enum HttpStatusCode {
   CONTINUE = 100,
@@ -133,17 +133,17 @@ export class HttpStatusText {
   public static NOT_EXTENDED: string = 'NOT_EXTENDED';
   public static NETWORK_AUTHENTICATION_REQUIRED: string = 'NETWORK_AUTHENTICATION_REQUIRED';
 
-  public static ToUpperSnakeCase(value: string): string {
-    if (isNoneOrEmptyOrWhiteSpace(value)) return '';
+  public static ToSnakeCaseUpper(value: string): string {
+    if (isNoneOrEmptyWhiteSpace(value)) return '';
     return value
       .trim()
-      .replace(/(?<!^)(?=[A-Z])|[-_\s]+/g, '_')
+      .replace(/(?<!^)(?=[A-Z])/g, '_')
       .replace(/[-_\s]+/g, '_')
       .toUpperCase();
   }
 
   public static parseCode(code: string): HttpStatusCode {
-    const snakeCaseText = HttpStatusText.ToUpperSnakeCase(code);
+    const snakeCaseText = HttpStatusText.ToSnakeCaseUpper(code);
     switch (snakeCaseText) {
       case HttpStatusText.CONTINUE:
         return HttpStatusCode.CONTINUE;

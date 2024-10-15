@@ -12,33 +12,35 @@ model User {
   uuid String @unique
 
   fullname String?
-  username String     @unique
+  username String    @unique
   password String
-  email    String?    @unique
-  phone    String?    @unique
+  email    String?   @unique
+  phone    String?   @unique
   admin    Boolean
   sessions Session[]
 
   created_at DateTime  @default(now())
   updated_at DateTime  @updatedAt
   deleted_at DateTime?
-	@@map("users")
+
+  @@map("users")
 }
 
 model Session {
   id   Int    @id @default(autoincrement())
   uuid String @unique
 
-  user_id    Int
-  token_id      String? @unique // using jti instead of storing the entire token
-  new_token_id  String? @unique // using jti instead of storing the entire token
-  ip_addr    String
-  user_agent String
-  expired_at DateTime?
-  user       User     @relation(fields: [user_id], references: [id])
+  user_id          Int
+  token_id         String?   @unique // using jti instead of storing the entire token
+  refresh_token_id String?   @unique // using jti instead of storing the entire token
+  ip_addr          String
+  user_agent       String
+  expired_at       DateTime?
+  user             User      @relation(fields: [user_id], references: [id])
 
   created_at DateTime  @default(now())
   updated_at DateTime  @updatedAt
   deleted_at DateTime?
-	@@map("sessions")
+
+  @@map("sessions")
 }
