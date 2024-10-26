@@ -3,7 +3,7 @@ import { User } from '@/models/User';
 import type { Request } from 'express';
 
 export interface RequestAuthGuard extends Request {
-  user: User;
   session: Session;
+  user: User;
   role: string;
 }

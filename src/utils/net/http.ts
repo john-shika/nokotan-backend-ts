@@ -1,4 +1,5 @@
 import { isNoneOrEmptyWhiteSpace } from '@/utils/common';
+import { TransformText } from '@/utils/transform-text';
 
 export enum HttpStatusCode {
   CONTINUE = 100,
@@ -67,7 +68,7 @@ export enum HttpStatusCode {
   NETWORK_AUTHENTICATION_REQUIRED = 511,
 }
 
-export class HttpStatusText {
+export class HttpStatusCodeValues {
   public static CONTINUE: string = 'CONTINUE';
   public static SWITCHING_PROTOCOLS: string = 'SWITCHING_PROTOCOLS';
   public static PROCESSING: string = 'PROCESSING';
@@ -133,145 +134,136 @@ export class HttpStatusText {
   public static NOT_EXTENDED: string = 'NOT_EXTENDED';
   public static NETWORK_AUTHENTICATION_REQUIRED: string = 'NETWORK_AUTHENTICATION_REQUIRED';
 
-  public static ToSnakeCaseUpper(value: string): string {
-    if (isNoneOrEmptyWhiteSpace(value)) return '';
-    return value
-      .trim()
-      .replace(/(?<!^)(?=[A-Z])/g, '_')
-      .replace(/[-_\s]+/g, '_')
-      .toUpperCase();
-  }
-
   public static parseCode(code: string): HttpStatusCode {
-    const snakeCaseText = HttpStatusText.ToSnakeCaseUpper(code);
+    const snakeCaseText = TransformText.toSnakeCaseUpper(code);
     switch (snakeCaseText) {
-      case HttpStatusText.CONTINUE:
+      case HttpStatusCodeValues.CONTINUE:
         return HttpStatusCode.CONTINUE;
-      case HttpStatusText.SWITCHING_PROTOCOLS:
+      case HttpStatusCodeValues.SWITCHING_PROTOCOLS:
         return HttpStatusCode.SWITCHING_PROTOCOLS;
-      case HttpStatusText.PROCESSING:
+      case HttpStatusCodeValues.PROCESSING:
         return HttpStatusCode.PROCESSING;
-      case HttpStatusText.EARLY_HINTS:
+      case HttpStatusCodeValues.EARLY_HINTS:
         return HttpStatusCode.EARLY_HINTS;
-      case HttpStatusText.OK:
+      case HttpStatusCodeValues.OK:
         return HttpStatusCode.OK;
-      case HttpStatusText.CREATED:
+      case HttpStatusCodeValues.CREATED:
         return HttpStatusCode.CREATED;
-      case HttpStatusText.ACCEPTED:
+      case HttpStatusCodeValues.ACCEPTED:
         return HttpStatusCode.ACCEPTED;
-      case HttpStatusText.NON_AUTHORITATIVE_INFORMATION:
+      case HttpStatusCodeValues.NON_AUTHORITATIVE_INFORMATION:
         return HttpStatusCode.NON_AUTHORITATIVE_INFORMATION;
-      case HttpStatusText.NO_CONTENT:
+      case HttpStatusCodeValues.NO_CONTENT:
         return HttpStatusCode.NO_CONTENT;
-      case HttpStatusText.RESET_CONTENT:
+      case HttpStatusCodeValues.RESET_CONTENT:
         return HttpStatusCode.RESET_CONTENT;
-      case HttpStatusText.PARTIAL_CONTENT:
+      case HttpStatusCodeValues.PARTIAL_CONTENT:
         return HttpStatusCode.PARTIAL_CONTENT;
-      case HttpStatusText.MULTI_STATUS:
+      case HttpStatusCodeValues.MULTI_STATUS:
         return HttpStatusCode.MULTI_STATUS;
-      case HttpStatusText.ALREADY_REPORTED:
+      case HttpStatusCodeValues.ALREADY_REPORTED:
         return HttpStatusCode.ALREADY_REPORTED;
-      case HttpStatusText.IM_USED:
+      case HttpStatusCodeValues.IM_USED:
         return HttpStatusCode.IM_USED;
-      case HttpStatusText.MULTI_CHOICES:
+      case HttpStatusCodeValues.MULTI_CHOICES:
         return HttpStatusCode.MULTI_CHOICES;
-      case HttpStatusText.MOVED_PERMANENTLY:
+      case HttpStatusCodeValues.MOVED_PERMANENTLY:
         return HttpStatusCode.MOVED_PERMANENTLY;
-      case HttpStatusText.FOUND:
+      case HttpStatusCodeValues.FOUND:
         return HttpStatusCode.FOUND;
-      case HttpStatusText.SEE_OTHER:
+      case HttpStatusCodeValues.SEE_OTHER:
         return HttpStatusCode.SEE_OTHER;
-      case HttpStatusText.NOT_MODIFIED:
+      case HttpStatusCodeValues.NOT_MODIFIED:
         return HttpStatusCode.NOT_MODIFIED;
-      case HttpStatusText.USE_PROXY:
+      case HttpStatusCodeValues.USE_PROXY:
         return HttpStatusCode.USE_PROXY;
-      case HttpStatusText.UNUSED:
+      case HttpStatusCodeValues.UNUSED:
         return HttpStatusCode.UNUSED;
-      case HttpStatusText.TEMPORARY_REDIRECT:
+      case HttpStatusCodeValues.TEMPORARY_REDIRECT:
         return HttpStatusCode.TEMPORARY_REDIRECT;
-      case HttpStatusText.PERMANENT_REDIRECT:
+      case HttpStatusCodeValues.PERMANENT_REDIRECT:
         return HttpStatusCode.PERMANENT_REDIRECT;
-      case HttpStatusText.BAD_REQUEST:
+      case HttpStatusCodeValues.BAD_REQUEST:
         return HttpStatusCode.BAD_REQUEST;
-      case HttpStatusText.UNAUTHORIZED:
+      case HttpStatusCodeValues.UNAUTHORIZED:
         return HttpStatusCode.UNAUTHORIZED;
-      case HttpStatusText.PAYMENT_REQUIRED:
+      case HttpStatusCodeValues.PAYMENT_REQUIRED:
         return HttpStatusCode.PAYMENT_REQUIRED;
-      case HttpStatusText.FORBIDDEN:
+      case HttpStatusCodeValues.FORBIDDEN:
         return HttpStatusCode.FORBIDDEN;
-      case HttpStatusText.NOT_FOUND:
+      case HttpStatusCodeValues.NOT_FOUND:
         return HttpStatusCode.NOT_FOUND;
-      case HttpStatusText.METHOD_NOT_ALLOWED:
+      case HttpStatusCodeValues.METHOD_NOT_ALLOWED:
         return HttpStatusCode.METHOD_NOT_ALLOWED;
-      case HttpStatusText.NOT_ACCEPTABLE:
+      case HttpStatusCodeValues.NOT_ACCEPTABLE:
         return HttpStatusCode.NOT_ACCEPTABLE;
-      case HttpStatusText.PROXY_AUTHENTICATION_REQUIRED:
+      case HttpStatusCodeValues.PROXY_AUTHENTICATION_REQUIRED:
         return HttpStatusCode.PROXY_AUTHENTICATION_REQUIRED;
-      case HttpStatusText.REQUEST_TIMEOUT:
+      case HttpStatusCodeValues.REQUEST_TIMEOUT:
         return HttpStatusCode.REQUEST_TIMEOUT;
-      case HttpStatusText.CONFLICT:
+      case HttpStatusCodeValues.CONFLICT:
         return HttpStatusCode.CONFLICT;
-      case HttpStatusText.GONE:
+      case HttpStatusCodeValues.GONE:
         return HttpStatusCode.GONE;
-      case HttpStatusText.LENGTH_REQUIRED:
+      case HttpStatusCodeValues.LENGTH_REQUIRED:
         return HttpStatusCode.LENGTH_REQUIRED;
-      case HttpStatusText.PRECONDITION_FAILED:
+      case HttpStatusCodeValues.PRECONDITION_FAILED:
         return HttpStatusCode.PRECONDITION_FAILED;
-      case HttpStatusText.PAYLOAD_TOO_LARGE:
+      case HttpStatusCodeValues.PAYLOAD_TOO_LARGE:
         return HttpStatusCode.PAYLOAD_TOO_LARGE;
-      case HttpStatusText.REQUEST_URI_TOO_LONG:
+      case HttpStatusCodeValues.REQUEST_URI_TOO_LONG:
         return HttpStatusCode.REQUEST_URI_TOO_LONG;
-      case HttpStatusText.UNSUPPORTED_MEDIA_TYPE:
+      case HttpStatusCodeValues.UNSUPPORTED_MEDIA_TYPE:
         return HttpStatusCode.UNSUPPORTED_MEDIA_TYPE;
-      case HttpStatusText.REQUESTED_RANGE_NOT_SATISFIABLE:
+      case HttpStatusCodeValues.REQUESTED_RANGE_NOT_SATISFIABLE:
         return HttpStatusCode.REQUESTED_RANGE_NOT_SATISFIABLE;
-      case HttpStatusText.EXPECTATION_FAILED:
+      case HttpStatusCodeValues.EXPECTATION_FAILED:
         return HttpStatusCode.EXPECTATION_FAILED;
-      case HttpStatusText.IM_A_TEAPOT:
+      case HttpStatusCodeValues.IM_A_TEAPOT:
         return HttpStatusCode.IM_A_TEAPOT;
-      case HttpStatusText.INSUFFICIENT_SPACE_ON_RESOURCE:
+      case HttpStatusCodeValues.INSUFFICIENT_SPACE_ON_RESOURCE:
         return HttpStatusCode.INSUFFICIENT_SPACE_ON_RESOURCE;
-      case HttpStatusText.METHOD_FAILURE:
+      case HttpStatusCodeValues.METHOD_FAILURE:
         return HttpStatusCode.METHOD_FAILURE;
-      case HttpStatusText.MISDIRECTED_REQUEST:
+      case HttpStatusCodeValues.MISDIRECTED_REQUEST:
         return HttpStatusCode.MISDIRECTED_REQUEST;
-      case HttpStatusText.UNPROCESSABLE_ENTITY:
+      case HttpStatusCodeValues.UNPROCESSABLE_ENTITY:
         return HttpStatusCode.UNPROCESSABLE_ENTITY;
-      case HttpStatusText.LOCKED:
+      case HttpStatusCodeValues.LOCKED:
         return HttpStatusCode.LOCKED;
-      case HttpStatusText.FAILED_DEPENDENCY:
+      case HttpStatusCodeValues.FAILED_DEPENDENCY:
         return HttpStatusCode.FAILED_DEPENDENCY;
-      case HttpStatusText.UPGRADE_REQUIRED:
+      case HttpStatusCodeValues.UPGRADE_REQUIRED:
         return HttpStatusCode.UPGRADE_REQUIRED;
-      case HttpStatusText.PRECONDITION_REQUIRED:
+      case HttpStatusCodeValues.PRECONDITION_REQUIRED:
         return HttpStatusCode.PRECONDITION_REQUIRED;
-      case HttpStatusText.TOO_MANY_REQUESTS:
+      case HttpStatusCodeValues.TOO_MANY_REQUESTS:
         return HttpStatusCode.TOO_MANY_REQUESTS;
-      case HttpStatusText.REQUEST_HEADER_FIELDS_TOO_LARGE:
+      case HttpStatusCodeValues.REQUEST_HEADER_FIELDS_TOO_LARGE:
         return HttpStatusCode.REQUEST_HEADER_FIELDS_TOO_LARGE;
-      case HttpStatusText.UNAVAILABLE_FOR_LEGAL_REASONS:
+      case HttpStatusCodeValues.UNAVAILABLE_FOR_LEGAL_REASONS:
         return HttpStatusCode.UNAVAILABLE_FOR_LEGAL_REASONS;
-      case HttpStatusText.INTERNAL_SERVER_ERROR:
+      case HttpStatusCodeValues.INTERNAL_SERVER_ERROR:
         return HttpStatusCode.INTERNAL_SERVER_ERROR;
-      case HttpStatusText.NOT_IMPLEMENTED:
+      case HttpStatusCodeValues.NOT_IMPLEMENTED:
         return HttpStatusCode.NOT_IMPLEMENTED;
-      case HttpStatusText.BAD_GATEWAY:
+      case HttpStatusCodeValues.BAD_GATEWAY:
         return HttpStatusCode.BAD_GATEWAY;
-      case HttpStatusText.SERVICE_UNAVAILABLE:
+      case HttpStatusCodeValues.SERVICE_UNAVAILABLE:
         return HttpStatusCode.SERVICE_UNAVAILABLE;
-      case HttpStatusText.GATEWAY_TIMEOUT:
+      case HttpStatusCodeValues.GATEWAY_TIMEOUT:
         return HttpStatusCode.GATEWAY_TIMEOUT;
-      case HttpStatusText.HTTP_VERSION_NOT_SUPPORTED:
+      case HttpStatusCodeValues.HTTP_VERSION_NOT_SUPPORTED:
         return HttpStatusCode.HTTP_VERSION_NOT_SUPPORTED;
-      case HttpStatusText.VARIANT_ALSO_NEGOTIATES:
+      case HttpStatusCodeValues.VARIANT_ALSO_NEGOTIATES:
         return HttpStatusCode.VARIANT_ALSO_NEGOTIATES;
-      case HttpStatusText.INSUFFICIENT_STORAGE:
+      case HttpStatusCodeValues.INSUFFICIENT_STORAGE:
         return HttpStatusCode.INSUFFICIENT_STORAGE;
-      case HttpStatusText.LOOP_DETECTED:
+      case HttpStatusCodeValues.LOOP_DETECTED:
         return HttpStatusCode.LOOP_DETECTED;
-      case HttpStatusText.NOT_EXTENDED:
+      case HttpStatusCodeValues.NOT_EXTENDED:
         return HttpStatusCode.NOT_EXTENDED;
-      case HttpStatusText.NETWORK_AUTHENTICATION_REQUIRED:
+      case HttpStatusCodeValues.NETWORK_AUTHENTICATION_REQUIRED:
         return HttpStatusCode.NETWORK_AUTHENTICATION_REQUIRED;
       default:
         throw new Error(`FormatException: Invalid status code ${code}`);
@@ -281,133 +273,133 @@ export class HttpStatusText {
   public static fromCode(code: HttpStatusCode): string {
     switch (code) {
       case HttpStatusCode.CONTINUE:
-        return HttpStatusText.CONTINUE;
+        return HttpStatusCodeValues.CONTINUE;
       case HttpStatusCode.SWITCHING_PROTOCOLS:
-        return HttpStatusText.SWITCHING_PROTOCOLS;
+        return HttpStatusCodeValues.SWITCHING_PROTOCOLS;
       case HttpStatusCode.PROCESSING:
-        return HttpStatusText.PROCESSING;
+        return HttpStatusCodeValues.PROCESSING;
       case HttpStatusCode.EARLY_HINTS:
-        return HttpStatusText.EARLY_HINTS;
+        return HttpStatusCodeValues.EARLY_HINTS;
       case HttpStatusCode.OK:
-        return HttpStatusText.OK;
+        return HttpStatusCodeValues.OK;
       case HttpStatusCode.CREATED:
-        return HttpStatusText.CREATED;
+        return HttpStatusCodeValues.CREATED;
       case HttpStatusCode.ACCEPTED:
-        return HttpStatusText.ACCEPTED;
+        return HttpStatusCodeValues.ACCEPTED;
       case HttpStatusCode.NON_AUTHORITATIVE_INFORMATION:
-        return HttpStatusText.NON_AUTHORITATIVE_INFORMATION;
+        return HttpStatusCodeValues.NON_AUTHORITATIVE_INFORMATION;
       case HttpStatusCode.NO_CONTENT:
-        return HttpStatusText.NO_CONTENT;
+        return HttpStatusCodeValues.NO_CONTENT;
       case HttpStatusCode.RESET_CONTENT:
-        return HttpStatusText.RESET_CONTENT;
+        return HttpStatusCodeValues.RESET_CONTENT;
       case HttpStatusCode.PARTIAL_CONTENT:
-        return HttpStatusText.PARTIAL_CONTENT;
+        return HttpStatusCodeValues.PARTIAL_CONTENT;
       case HttpStatusCode.MULTI_STATUS:
-        return HttpStatusText.MULTI_STATUS;
+        return HttpStatusCodeValues.MULTI_STATUS;
       case HttpStatusCode.ALREADY_REPORTED:
-        return HttpStatusText.ALREADY_REPORTED;
+        return HttpStatusCodeValues.ALREADY_REPORTED;
       case HttpStatusCode.IM_USED:
-        return HttpStatusText.IM_USED;
+        return HttpStatusCodeValues.IM_USED;
       case HttpStatusCode.MULTI_CHOICES:
-        return HttpStatusText.MULTI_CHOICES;
+        return HttpStatusCodeValues.MULTI_CHOICES;
       case HttpStatusCode.MOVED_PERMANENTLY:
-        return HttpStatusText.MOVED_PERMANENTLY;
+        return HttpStatusCodeValues.MOVED_PERMANENTLY;
       case HttpStatusCode.FOUND:
-        return HttpStatusText.FOUND;
+        return HttpStatusCodeValues.FOUND;
       case HttpStatusCode.SEE_OTHER:
-        return HttpStatusText.SEE_OTHER;
+        return HttpStatusCodeValues.SEE_OTHER;
       case HttpStatusCode.NOT_MODIFIED:
-        return HttpStatusText.NOT_MODIFIED;
+        return HttpStatusCodeValues.NOT_MODIFIED;
       case HttpStatusCode.USE_PROXY:
-        return HttpStatusText.USE_PROXY;
+        return HttpStatusCodeValues.USE_PROXY;
       case HttpStatusCode.UNUSED:
-        return HttpStatusText.UNUSED;
+        return HttpStatusCodeValues.UNUSED;
       case HttpStatusCode.TEMPORARY_REDIRECT:
-        return HttpStatusText.TEMPORARY_REDIRECT;
+        return HttpStatusCodeValues.TEMPORARY_REDIRECT;
       case HttpStatusCode.PERMANENT_REDIRECT:
-        return HttpStatusText.PERMANENT_REDIRECT;
+        return HttpStatusCodeValues.PERMANENT_REDIRECT;
       case HttpStatusCode.BAD_REQUEST:
-        return HttpStatusText.BAD_REQUEST;
+        return HttpStatusCodeValues.BAD_REQUEST;
       case HttpStatusCode.UNAUTHORIZED:
-        return HttpStatusText.UNAUTHORIZED;
+        return HttpStatusCodeValues.UNAUTHORIZED;
       case HttpStatusCode.PAYMENT_REQUIRED:
-        return HttpStatusText.PAYMENT_REQUIRED;
+        return HttpStatusCodeValues.PAYMENT_REQUIRED;
       case HttpStatusCode.FORBIDDEN:
-        return HttpStatusText.FORBIDDEN;
+        return HttpStatusCodeValues.FORBIDDEN;
       case HttpStatusCode.NOT_FOUND:
-        return HttpStatusText.NOT_FOUND;
+        return HttpStatusCodeValues.NOT_FOUND;
       case HttpStatusCode.METHOD_NOT_ALLOWED:
-        return HttpStatusText.METHOD_NOT_ALLOWED;
+        return HttpStatusCodeValues.METHOD_NOT_ALLOWED;
       case HttpStatusCode.NOT_ACCEPTABLE:
-        return HttpStatusText.NOT_ACCEPTABLE;
+        return HttpStatusCodeValues.NOT_ACCEPTABLE;
       case HttpStatusCode.PROXY_AUTHENTICATION_REQUIRED:
-        return HttpStatusText.PROXY_AUTHENTICATION_REQUIRED;
+        return HttpStatusCodeValues.PROXY_AUTHENTICATION_REQUIRED;
       case HttpStatusCode.REQUEST_TIMEOUT:
-        return HttpStatusText.REQUEST_TIMEOUT;
+        return HttpStatusCodeValues.REQUEST_TIMEOUT;
       case HttpStatusCode.CONFLICT:
-        return HttpStatusText.CONFLICT;
+        return HttpStatusCodeValues.CONFLICT;
       case HttpStatusCode.GONE:
-        return HttpStatusText.GONE;
+        return HttpStatusCodeValues.GONE;
       case HttpStatusCode.LENGTH_REQUIRED:
-        return HttpStatusText.LENGTH_REQUIRED;
+        return HttpStatusCodeValues.LENGTH_REQUIRED;
       case HttpStatusCode.PRECONDITION_FAILED:
-        return HttpStatusText.PRECONDITION_FAILED;
+        return HttpStatusCodeValues.PRECONDITION_FAILED;
       case HttpStatusCode.PAYLOAD_TOO_LARGE:
-        return HttpStatusText.PAYLOAD_TOO_LARGE;
+        return HttpStatusCodeValues.PAYLOAD_TOO_LARGE;
       case HttpStatusCode.REQUEST_URI_TOO_LONG:
-        return HttpStatusText.REQUEST_URI_TOO_LONG;
+        return HttpStatusCodeValues.REQUEST_URI_TOO_LONG;
       case HttpStatusCode.UNSUPPORTED_MEDIA_TYPE:
-        return HttpStatusText.UNSUPPORTED_MEDIA_TYPE;
+        return HttpStatusCodeValues.UNSUPPORTED_MEDIA_TYPE;
       case HttpStatusCode.REQUESTED_RANGE_NOT_SATISFIABLE:
-        return HttpStatusText.REQUESTED_RANGE_NOT_SATISFIABLE;
+        return HttpStatusCodeValues.REQUESTED_RANGE_NOT_SATISFIABLE;
       case HttpStatusCode.EXPECTATION_FAILED:
-        return HttpStatusText.EXPECTATION_FAILED;
+        return HttpStatusCodeValues.EXPECTATION_FAILED;
       case HttpStatusCode.IM_A_TEAPOT:
-        return HttpStatusText.IM_A_TEAPOT;
+        return HttpStatusCodeValues.IM_A_TEAPOT;
       case HttpStatusCode.INSUFFICIENT_SPACE_ON_RESOURCE:
-        return HttpStatusText.INSUFFICIENT_SPACE_ON_RESOURCE;
+        return HttpStatusCodeValues.INSUFFICIENT_SPACE_ON_RESOURCE;
       case HttpStatusCode.METHOD_FAILURE:
-        return HttpStatusText.METHOD_FAILURE;
+        return HttpStatusCodeValues.METHOD_FAILURE;
       case HttpStatusCode.MISDIRECTED_REQUEST:
-        return HttpStatusText.MISDIRECTED_REQUEST;
+        return HttpStatusCodeValues.MISDIRECTED_REQUEST;
       case HttpStatusCode.UNPROCESSABLE_ENTITY:
-        return HttpStatusText.UNPROCESSABLE_ENTITY;
+        return HttpStatusCodeValues.UNPROCESSABLE_ENTITY;
       case HttpStatusCode.LOCKED:
-        return HttpStatusText.LOCKED;
+        return HttpStatusCodeValues.LOCKED;
       case HttpStatusCode.FAILED_DEPENDENCY:
-        return HttpStatusText.FAILED_DEPENDENCY;
+        return HttpStatusCodeValues.FAILED_DEPENDENCY;
       case HttpStatusCode.UPGRADE_REQUIRED:
-        return HttpStatusText.UPGRADE_REQUIRED;
+        return HttpStatusCodeValues.UPGRADE_REQUIRED;
       case HttpStatusCode.PRECONDITION_REQUIRED:
-        return HttpStatusText.PRECONDITION_REQUIRED;
+        return HttpStatusCodeValues.PRECONDITION_REQUIRED;
       case HttpStatusCode.TOO_MANY_REQUESTS:
-        return HttpStatusText.TOO_MANY_REQUESTS;
+        return HttpStatusCodeValues.TOO_MANY_REQUESTS;
       case HttpStatusCode.REQUEST_HEADER_FIELDS_TOO_LARGE:
-        return HttpStatusText.REQUEST_HEADER_FIELDS_TOO_LARGE;
+        return HttpStatusCodeValues.REQUEST_HEADER_FIELDS_TOO_LARGE;
       case HttpStatusCode.UNAVAILABLE_FOR_LEGAL_REASONS:
-        return HttpStatusText.UNAVAILABLE_FOR_LEGAL_REASONS;
+        return HttpStatusCodeValues.UNAVAILABLE_FOR_LEGAL_REASONS;
       case HttpStatusCode.INTERNAL_SERVER_ERROR:
-        return HttpStatusText.INTERNAL_SERVER_ERROR;
+        return HttpStatusCodeValues.INTERNAL_SERVER_ERROR;
       case HttpStatusCode.NOT_IMPLEMENTED:
-        return HttpStatusText.NOT_IMPLEMENTED;
+        return HttpStatusCodeValues.NOT_IMPLEMENTED;
       case HttpStatusCode.BAD_GATEWAY:
-        return HttpStatusText.BAD_GATEWAY;
+        return HttpStatusCodeValues.BAD_GATEWAY;
       case HttpStatusCode.SERVICE_UNAVAILABLE:
-        return HttpStatusText.SERVICE_UNAVAILABLE;
+        return HttpStatusCodeValues.SERVICE_UNAVAILABLE;
       case HttpStatusCode.GATEWAY_TIMEOUT:
-        return HttpStatusText.GATEWAY_TIMEOUT;
+        return HttpStatusCodeValues.GATEWAY_TIMEOUT;
       case HttpStatusCode.HTTP_VERSION_NOT_SUPPORTED:
-        return HttpStatusText.HTTP_VERSION_NOT_SUPPORTED;
+        return HttpStatusCodeValues.HTTP_VERSION_NOT_SUPPORTED;
       case HttpStatusCode.VARIANT_ALSO_NEGOTIATES:
-        return HttpStatusText.VARIANT_ALSO_NEGOTIATES;
+        return HttpStatusCodeValues.VARIANT_ALSO_NEGOTIATES;
       case HttpStatusCode.INSUFFICIENT_STORAGE:
-        return HttpStatusText.INSUFFICIENT_STORAGE;
+        return HttpStatusCodeValues.INSUFFICIENT_STORAGE;
       case HttpStatusCode.LOOP_DETECTED:
-        return HttpStatusText.LOOP_DETECTED;
+        return HttpStatusCodeValues.LOOP_DETECTED;
       case HttpStatusCode.NOT_EXTENDED:
-        return HttpStatusText.NOT_EXTENDED;
+        return HttpStatusCodeValues.NOT_EXTENDED;
       case HttpStatusCode.NETWORK_AUTHENTICATION_REQUIRED:
-        return HttpStatusText.NETWORK_AUTHENTICATION_REQUIRED;
+        return HttpStatusCodeValues.NETWORK_AUTHENTICATION_REQUIRED;
       default:
         throw new Error(`Exception: Unsupported status code: ${code}`);
     }

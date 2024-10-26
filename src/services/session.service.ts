@@ -29,7 +29,7 @@ export class SessionService {
     return (
       (await this.prisma.session.findFirst({
         where: {
-          OR: [{ token_id }, { new_token_id: token_id }],
+          OR: [{ token_id }, { refresh_token_id: token_id }],
           deleted_at: null,
         },
         include: {

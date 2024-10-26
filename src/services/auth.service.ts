@@ -56,7 +56,7 @@ export class AuthService {
     const payload: IClaimsJwtToken = {
       jti: token_id,
       sid: sessionId,
-      user: user.username,
+      name: user.username,
       role: user.admin ? Roles.ADMIN : Roles.USER,
     };
 
@@ -78,7 +78,7 @@ export class AuthService {
       token_id: null,
       ip_addr,
       user_agent,
-      new_token_id: token_id,
+      refresh_token_id: token_id,
       expired_at: expiredAt,
       updated_at: createdAt,
     });
@@ -105,7 +105,8 @@ export class AuthService {
     const payload: IClaimsJwtToken = {
       jti: token_id,
       sid: sessionId,
-      user: user.username,
+      name: user.username,
+      email: user.email ?? "",
       role: Roles.USER,
     };
 
@@ -127,7 +128,7 @@ export class AuthService {
       token_id: null,
       ip_addr,
       user_agent,
-      new_token_id: token_id,
+      refresh_token_id: token_id,
       expired_at: expiredAt,
       updated_at: createdAt,
     });
@@ -162,7 +163,7 @@ export class AuthService {
     const payload: IClaimsJwtToken = {
       jti: tokenId,
       sid: sessionId,
-      user: user.username,
+      name: user.username,
       role: user.admin ? Roles.ADMIN : Roles.USER,
     };
 
@@ -177,7 +178,7 @@ export class AuthService {
     await this.sessionService.updateSession({
       where: { id: session.id },
       data: {
-        new_token_id: tokenId,
+        refresh_token_id: tokenId,
         expired_at: expiredAt,
         updated_at: updatedAt,
       },

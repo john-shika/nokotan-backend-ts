@@ -1,7 +1,7 @@
 import js from '@eslint/js';
 import path from 'node:path';
 import globals from 'globals';
-import tsEslintPlugin from '@typescript-eslint/eslint-plugin';
+import typescriptEslintEslintPlugin from '@typescript-eslint/eslint-plugin';
 import { FlatCompat } from '@eslint/eslintrc';
 import { fileURLToPath } from 'node:url';
 
@@ -31,7 +31,7 @@ export default [
   ...compat.extends('plugin:@typescript-eslint/recommended', 'plugin:prettier/recommended'),
   {
     plugins: {
-      '@typescript-eslint': tsEslintPlugin,
+      '@typescript-eslint': typescriptEslintEslintPlugin,
     },
 
     languageOptions: {

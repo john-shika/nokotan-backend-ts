@@ -5,7 +5,7 @@ import { ValidateNested } from 'class-validator';
 import type { IMessageBody } from '@/schemas/MessageBody';
 
 export interface IClaimsJwtToken {
-  user: string;
+  name: string;
   role: string;
   email?: string;
   jti?: string;
@@ -16,7 +16,7 @@ export interface IClaimsJwtToken {
 }
 
 export class ClaimsJwtToken implements IClaimsJwtToken {
-  public readonly user: string;
+  public readonly name: string;
   public readonly role: string;
   public readonly email?: string;
   public readonly jti?: string;
@@ -25,8 +25,8 @@ export class ClaimsJwtToken implements IClaimsJwtToken {
   public readonly iat?: number;
   public readonly exp?: number;
 
-  constructor(user: string, role: string, email?: string, jti?: string, sub?: string, sid?: string, iat?: number, exp?: number) {
-    this.user = user;
+  constructor(name: string, role: string, email?: string, jti?: string, sub?: string, sid?: string, iat?: number, exp?: number) {
+    this.name = name;
     this.role = role;
     this.email = email;
     this.jti = jti;

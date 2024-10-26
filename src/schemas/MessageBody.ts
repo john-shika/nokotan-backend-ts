@@ -1,10 +1,10 @@
 import { getDateISOString } from '@/utils/common';
-import HttpStatusCode, { HttpStatusText } from '@/utils/net/http';
+import HttpStatusCode, { HttpStatusCodeValues } from '@/utils/net/http';
 import { ApiProperty } from '@nestjs/swagger';
 import { Expose } from 'class-transformer';
 
 export interface IMessageStatus {
-  status: HttpStatusText;
+  status: HttpStatusCodeValues;
   statusCode: HttpStatusCode;
   statusOk: boolean;
 }
@@ -18,7 +18,7 @@ export interface IMessageBody<T extends any> extends IMessageStatus {
 export function setStatusMessage(messageBody: IMessageStatus, code: HttpStatusCode) {
   messageBody.statusOk = 200 <= code && code < 300;
   messageBody.statusCode = code;
-  messageBody.status = HttpStatusText.fromCode(code);
+  messageBody.status = HttpStatusCodeValues.fromCode(code);
 }
 
 export class MessageBody<T extends any> implements IMessageBody<T> {

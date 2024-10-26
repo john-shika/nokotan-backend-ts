@@ -63,7 +63,7 @@ export class AuthGuard implements CanActivate {
 
       const tokenId = payload?.jti.trim() ?? '';
       const sessionId = payload?.sid.trim() ?? '';
-      const username = payload?.user.trim() ?? '';
+      const username = payload?.name.trim() ?? '';
       const role = payload?.role.trim() ?? '';
 
       (() => {
@@ -97,8 +97,8 @@ export class AuthGuard implements CanActivate {
       await (async (session: Session) => {
         if (sessionNewTokenId !== tokenId) {
           // make it request as RequestAuthGuard interface
-          defineProperty(request, 'user', user);
           defineProperty(request, 'session', session);
+          defineProperty(request, 'user', user);
           defineProperty(request, 'role', role);
           return;
         }
@@ -113,7 +113,7 @@ export class AuthGuard implements CanActivate {
           },
           data: {
             token_id: tokenId, // replace old token with new token
-            new_token_id: null, // replace empty token with null
+            refresh_token_id: null, // replace empty token with null
             updated_at: updatedAt,
           },
         });
