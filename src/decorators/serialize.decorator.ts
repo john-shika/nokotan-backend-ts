@@ -5,3 +5,7 @@ import { ClassConstructor } from 'class-transformer';
 export function Serialize<T extends any>(dto: ClassConstructor<T>) {
   return UseInterceptors(new SerializeInterceptor<T>(dto));
 }
+
+// export function Serialize<T extends any>(dto: T) {
+//   return UseInterceptors(new SerializeInterceptor<T>(dto));
+// }

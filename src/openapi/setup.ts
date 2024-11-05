@@ -4,6 +4,7 @@ import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { Server, IncomingMessage, ServerResponse } from 'http';
 import { debugConstants } from '@/globals/constants';
 import type { Request, Response } from 'express';
+import { INestApplication } from '@nestjs/common';
 
 export function init(app: NestExpressApplication<Server<typeof IncomingMessage, typeof ServerResponse>>) {
   if (debugConstants.testing) {

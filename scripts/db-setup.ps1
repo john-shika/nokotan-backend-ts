@@ -1,7 +1,8 @@
 #!pwsh
 
-$currentWorkDir = Split-Path -Parent $MyInvocation.MyCommand.Path
-Set-Location $currentWorkDir -ErrorAction Stop
+$currWorkDir = Get-Location
+$scriptDir = Split-Path -Parent $MyInvocation.MyCommand.Definition
+Set-Location $scriptDir -ErrorAction Stop
 Set-Location ..
 
 $items = @("prisma/migrations", "prisma/dev.db", "prisma/dev.db-journal")
@@ -18,5 +19,4 @@ npx prisma migrate dev --name init
 node "scripts/database/feeders/users.cjs"
 Write-Output "User inserted successfully"
 
-Set-Location $currentWorkDir
-Set-Location ..
+Set-Location $currWorkDir
